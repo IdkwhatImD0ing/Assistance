@@ -5,7 +5,7 @@ import { QuestionField } from "."
 import BotResponse from "../components/botResponse"
 
 const ResponsesPage = () => {
-    const {sharedData, setSharedData} = useContext(AppContext)
+    const {sharedData, setSharedData, resetSharedData} = useContext(AppContext)
     const conversations = sharedData[sharedData.selectedConversation].conversation;
 
     useEffect(() => {
@@ -81,7 +81,15 @@ const ResponsesPage = () => {
           sx={{height: '10vh'}}
         >
           <Button variant="contained">Previous</Button>
-          <Button variant="contained">New Chat</Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              resetSharedData()
+              navigate('/')
+            }}
+          >
+            New Chat
+          </Button>
         </Stack>
         {conversations.map((message, index) => (
           <Stack
