@@ -35,7 +35,7 @@ const QuestionField = (props) => {
 
 
 const IndexPage = () => {
-  const {sharedPage, resetSharedData} = useContext(AppContext)
+  const {sharedData, setSharedData, resetSharedData} = useContext(AppContext)
   const [text, setText] = useState('')
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -52,14 +52,18 @@ const IndexPage = () => {
   const submit = () => {
     // Create the user message in the schema
     const message = {
-      role: 'user',
-      message: text,
+      question: text,
       bingCompleted: false,
       bardCompleted: false,
       gpt3Completed: false,
       gpt4Completed: false,
     }
-    sharedPage[sharedPage.selectedConversation].conversation.push(message)
+    setSharedData((prev) => {
+      const newSharedData = {...prev}
+      newSharedData[prev.selectedConversation].conversation.push(message)
+      return newSharedData
+    })
+    navigate('/responses')
   }
 
   return (
