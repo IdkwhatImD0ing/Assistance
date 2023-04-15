@@ -1,8 +1,8 @@
 import React, {useContext, useEffect} from "react"
 import AppContext from '../appContext'
 import { Box, Typography, TextField, InputAdornment, Button, Stack } from "@mui/material"
-import  Message from '../components/message'
 import { QuestionField } from "."
+import BotResponse from "../components/botResponse"
 
 const ResponsesPage = () => {
     const {sharedData, setSharedData} = useContext(AppContext)
@@ -65,7 +65,6 @@ const ResponsesPage = () => {
 
     return (
       <Box
-      
         width="100vw"
         height="100vh"
         display="flex"
@@ -74,13 +73,12 @@ const ResponsesPage = () => {
         alignItems="center"
         spacing={2}
       >
-
         <Stack
           direction="row"
           justifyContent="center"
           alignItems="center"
           spacing={2}
-          sx= {{height: "10vh"}}
+          sx={{height: '10vh'}}
         >
           <Button variant="contained">Previous</Button>
           <Button variant="contained">New Chat</Button>
@@ -93,25 +91,26 @@ const ResponsesPage = () => {
             alignItems="flex-start"
             spacing={2}
           >
-            <Typography key = {`question-${index}`}variant="h6" component="h6" gutterBottom>
+            <Typography
+              key={`question-${index}`}
+              variant="h6"
+              component="h6"
+              gutterBottom
+            >
               Question: {message.question}
             </Typography>
-            <Typography
+            <BotResponse
               key={`bing-${index}`}
-              variant="h6"
-              component="h6"
-              gutterBottom
-            >
-              {message.bingResponse ? message.bingResponse : 'Loading...'}
-            </Typography>
-            <Typography
+              name="Bing"
+              text={message.bingResponse ? message.bingResponse : 'Loading...'}
+              avatar={require('../images/bingLogo.png').default}
+            />
+            <BotResponse
               key={`bard-${index}`}
-              variant="h6"
-              component="h6"
-              gutterBottom
-            >
-              {message.bardResponse ? message.bardResponse : 'Loading...'}
-            </Typography>
+              name="Bard"
+              text={message.bardResponse ? message.bardResponse : 'Loading...'}
+              avatar={require('../images/bardLogo.png').default}
+            />
           </Stack>
         ))}
       </Box>
