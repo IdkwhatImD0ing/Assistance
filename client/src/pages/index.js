@@ -1,6 +1,23 @@
 
 import * as React from "react"
-import { Box, Typography, TextField } from "@mui/material"
+import { Box, Typography, TextField, InputAdornment } from "@mui/material"
+import SendIcon from '@mui/icons-material/Send';
+
+const QuestionField = () => {
+  return (
+    <TextField id="outlined-basic" label="Ask a question" variant="outlined" 
+    multiline
+    fullWidth
+    InputProps={{
+      endAdornment: (
+        <InputAdornment position="end">
+          <SendIcon/>
+        </InputAdornment>
+      ) 
+    }}
+    color="secondary"/>
+  )
+}
 import AppContext from '../appContext'
 
 const IndexPage = () => {
@@ -20,7 +37,15 @@ const IndexPage = () => {
 
   return (
     <Box
-      width = "100vw"
+    width = "100w"
+    height = "100vh"
+    display = "flex"
+    flexDirection="column"
+    justifyContent = "center"
+    alignItems = "center"
+  >
+    <Box
+      width = "70vw"
       height = "100vh"
       display = "flex"
       flexDirection="column"
@@ -28,7 +53,8 @@ const IndexPage = () => {
       alignItems = "center"
     >
       <Typography variant="h1" component="h2" gutterBottom>Assistance</Typography>
-      <TextField id="outlined-basic" label="Ask a question" variant="outlined" />
+      <QuestionField/>
+    </Box>
     </Box>
   )
 }
