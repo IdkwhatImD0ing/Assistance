@@ -43,7 +43,7 @@ async def ask_chatbot(conversation):
 @app.post("/bingchat")
 async def bingchat(conversation: Conversation):
     response = await ask_chatbot(conversation.conversation)
-    return {"response": response["item"]["messages"][-1]["text"]}
+    return {"response": response["item"]["messages"][-1].get("text", "Sorry, I cannot answer that. :(")}
 
 def ask_bard_chatbot(conversation):
     conversation_text = "\n".join([f"{msg.role}: {msg.message}" for msg in conversation])
