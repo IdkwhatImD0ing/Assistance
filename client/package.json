@@ -22,6 +22,7 @@
     "gatsby-plugin-manifest": "^5.8.0",
     "gatsby-plugin-sitemap": "^6.8.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "uuid": "^9.0.0"
   }
 }

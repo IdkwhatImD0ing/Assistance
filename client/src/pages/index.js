@@ -1,8 +1,23 @@
 
 import * as React from "react"
 import { Box, Typography, TextField } from "@mui/material"
+import AppContext from '../appContext'
 
 const IndexPage = () => {
+  const {resetSharedData} = useContext(AppContext)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const pageLoadedAt = window.performance.timing.navigationStart
+      const timeSincePageLoad = Date.now() - pageLoadedAt
+
+      if (timeSincePageLoad < 100) {
+        clearCookies()
+        resetSharedData
+        navigate('/')
+      }
+    }
+  }, [])
+
   return (
     <Box
       width = "100vw"
