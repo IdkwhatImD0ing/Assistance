@@ -139,13 +139,14 @@ const ResponsesPage = () => {
       <Box
         width="100vw"
         height="100vh"
-        display="flex"
+      >
+        <Box         display="flex"
         flexDirection="column"
         justifyContent="space-between"
         alignItems="center"
         spacing={2}
         overflow={'auto'}
-      >
+>
         <Stack
           direction="row"
           justifyContent="center"
@@ -223,13 +224,16 @@ const ResponsesPage = () => {
           <MenuItem value="bing">Bing</MenuItem>
           <MenuItem value="bard">Bard</MenuItem>
         </Select>
+        </Box>
+        <Box width="100vw" position="sticky" bottom="0px" backgroundColor="lightblue">
         <QuestionField
           onChange={onChange}
           onSubmit={submit}
           value={text}
           placeholder="Ask a question"
-          sx={{position: 'absolute', bottom: '0px'}}
+          
         />
+        </Box>
       </Box>
     )
 }

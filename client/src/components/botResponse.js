@@ -25,7 +25,7 @@ const BotResponse = (props) => {
     return(
     <Card sx={{width:"100%"}}>
     <CardContent>
-      <Typography variant="subtitle1">{props.name}</Typography>
+      <Typography variant="subtitle1" sx={{fontWeight: "bold"}}>{props.name}</Typography>
       <Typography><ReactMarkdown children={props.text}></ReactMarkdown></Typography>
     </CardContent>
   </Card>

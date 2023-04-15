@@ -1,5 +1,5 @@
 import React from 'react'
-import { TextField, InputAdornment } from '@mui/material'
+import { TextField, InputAdornment, IconButton } from '@mui/material'
 import SendIcon from '@mui/icons-material/Send'
 
 const QuestionField = (props) => {
@@ -22,9 +22,11 @@ const QuestionField = (props) => {
       onKeyDown={handleKeyDown}
       InputProps={{
         endAdornment: (
+          <IconButton onClick={props.onSubmit}>
           <InputAdornment position="end">
             <SendIcon />
           </InputAdornment>
+          </IconButton>
         ),
       }}
       color="secondary"
