@@ -22,7 +22,7 @@ const BotResponse = (props) => {
     // Props.text = bot text
     // Props.avatar = bot avatar
     return(
-    <Card sx={{width:"70%"}}>
+    <Card sx={{width:"100%"}}>
     <CardContent>
       <Typography variant="subtitle1">{props.name}</Typography>
       <Typography>{props.text || "Loading response..."}</Typography>
