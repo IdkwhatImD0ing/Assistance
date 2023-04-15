@@ -4,9 +4,10 @@ import { Box, Typography, TextField, InputAdornment } from "@mui/material"
 import SendIcon from '@mui/icons-material/Send';
 import AppContext from '../appContext'
 import QuestionField from "../components/questionField"
+import {v4 as uuidv4} from 'uuid'
 
 const IndexPage = () => {
-  const {sharedData, setSharedData, resetSharedData} = useContext(AppContext)
+  const {sharedData, setSharedData} = useContext(AppContext)
   const [text, setText] = useState('')
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -14,13 +15,22 @@ const IndexPage = () => {
       const timeSincePageLoad = Date.now() - pageLoadedAt
 
       if (timeSincePageLoad < 100) {
-        resetSharedData()
         navigate('/')
       }
     }
   }, [])
 
   const submit = () => {
+    // Create a new session
+    const initialUUID = uuidv4()
+    setSharedData({
+      selectedConversation: initialUUID,
+      [initialUUID]: {
+        editable: true,
+        selectedLLM: 'all',
+        conversation: [],
+      },
+    })
     // Create the user message in the schema
     const message = {
       question: text,
@@ -32,6 +42,7 @@ const IndexPage = () => {
     }
     setSharedData((prev) => {
       const newSharedData = {...prev}
+      newSharedData.sessionName = text
       newSharedData[prev.selectedConversation].conversation.push(message)
       return newSharedData
     })
