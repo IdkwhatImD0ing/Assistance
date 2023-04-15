@@ -5,17 +5,21 @@ import SendIcon from '@mui/icons-material/Send';
 
 const QuestionField = () => {
   return (
-    <TextField id="outlined-basic" label="Ask a question" variant="outlined" 
-    multiline
-    fullWidth
-    InputProps={{
-      endAdornment: (
-        <InputAdornment position="end">
-          <SendIcon/>
-        </InputAdornment>
-      ) 
-    }}
-    color="secondary"/>
+    <TextField
+      id="outlined-basic"
+      label="Ask a question"
+      variant="outlined"
+      multiline
+      fullWidth
+      InputProps={{
+        endAdornment: (
+          <InputAdornment position="end">
+            <SendIcon />
+          </InputAdornment>
+        ),
+      }}
+      color="secondary"
+    />
   )
 }
 import AppContext from '../appContext'
