@@ -12,7 +12,7 @@ const Message = (props) => {
     return (
         <Stack
   direction="column"
-  justifyContent="flex-start"
+  justifyContent="center"
   alignItems="center"
   spacing={2}
   sx= {{height: "90vh", width:"100vw"}}
