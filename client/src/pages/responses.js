@@ -140,13 +140,7 @@ const ResponsesPage = () => {
         width="100vw"
         height="100vh"
       >
-        <Box         display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-        alignItems="center"
-        spacing={2}
-        overflow={'auto'}
->
+        <Box position="sticky" top="0px">
         <Stack
           direction="row"
           justifyContent="center"
@@ -165,6 +159,15 @@ const ResponsesPage = () => {
             New Chat
           </Button>
         </Stack>
+        </Box>
+        <Box         display="flex"
+        flexDirection="column"
+        justifyContent="space-between"
+        alignItems="center"
+        spacing={2}
+        overflow={'auto'}
+>
+
         {conversations.map((message, index) => (
           <Stack
             key={`stack-${index}`}
