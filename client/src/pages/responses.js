@@ -7,25 +7,25 @@ const ResponsesPage = () => {
     const {sharedData} = useContext(AppContext)
     const conversation = sharedData[sharedData.selectedConversation].converation;
     return (
-        <Box
-        width = "100vw"
-        height = "100vh"
-        display = "flex"
+      <Box
+        width="100vw"
+        height="100vh"
+        display="flex"
         flexDirection="column"
-        justifyContent = "center"
-        alignItems = "center"
-        spacing = {2}
+        justifyContent="center"
+        alignItems="center"
+        spacing={2}
       >
         <Stack
           direction="row"
           justifyContent="center"
           alignItems="center"
           spacing={2}
-          >
-        <Button variant="contained">Previous</Button>
-        <Button variant="contained">New Chat</Button>
+        >
+          <Button variant="contained">Previous</Button>
+          <Button variant="contained">New Chat</Button>
         </Stack>
-        <Message question = "Test Question" bingResponse = "Test Bing Response"/>
+        <Message question="Test Question" bingResponse="Test Bing Response" />
       </Box>
     )
 }

@@ -18,4 +18,4 @@ export const themeOptions = createTheme({
       secondary: '#2b282e',
     },
   },
-});
+})

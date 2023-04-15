@@ -8,14 +8,12 @@ const Message = (props) => {
     // Props.gpt3Response = what gpt3 returned, undefinded = loading
     // Props.gpt4Response = what gpt4 returned, undefinded = loading
     return (
-        <Stack
-  direction="column"
-  justifyContent="flex-start"
-  alignItems="flex-start"
-  spacing={2}
->
-  
-</Stack>
+      <Stack
+        direction="column"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+        spacing={2}
+      ></Stack>
     )
 }
 
