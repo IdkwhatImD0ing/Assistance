@@ -88,7 +88,7 @@ const ResponsesPage = () => {
             key={`stack-${index}`}
             direction="column"
             justifyContent="flex-start"
-            alignItems="flex-start"
+            alignItems="center"
             spacing={2}
           >
             <Typography
