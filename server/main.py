@@ -5,12 +5,14 @@ from pydantic import BaseModel
 from typing import List
 from EdgeGPT import Chatbot, ConversationStyle
 from Bard import Chatbot as BardChatbot
+import openai
 from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI()
 token = environ.get("BARD_TOKEN")
 bard_chatbot = BardChatbot(token)
+openai.api_key = environ.get("OPENAI_API_KEY")
 
 class Message(BaseModel):
     role: str
@@ -44,3 +46,27 @@ def ask_bard_chatbot(conversation):
 def bardchat(conversation: Conversation):
     response = ask_bard_chatbot(conversation.conversation)
     return {"response": response["content"]}
+
+@app.post("/openai_chat3.5")
+async def openai_chat(conversation: Conversation):
+    openai_conversation = []
+    for msg in conversation.conversation:
+        if msg.role == "bot":
+            openai_conversation.append({"role": "assistant", "content": msg.message})
+        else:
+            openai_conversation.append({"role": msg.role, "content": msg.message})
+    
+    response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=openai_conversation)
+    return {"response": response.choices[0].message.content.strip()}
+
+@app.post("/openai_chat4")
+async def openai_chat(conversation: Conversation):
+    openai_conversation = []
+    for msg in conversation.conversation:
+        if msg.role == "bot":
+            openai_conversation.append({"role": "assistant", "content": msg.message})
+        else:
+            openai_conversation.append({"role": msg.role, "content": msg.message})
+    
+    response = openai.ChatCompletion.create(model="gpt-4", messages=openai_conversation)
+    return {"response": response.choices[0].message.content.strip()}
