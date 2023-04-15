@@ -1,9 +1,10 @@
 import React, {useContext, useEffect, useState} from "react"
 import AppContext from '../appContext'
 import { navigate } from 'gatsby'
-import { Box, Typography, Button, Stack } from "@mui/material"
+import { Box, Typography, Button, Stack, Card, CardContent } from "@mui/material"
 import BotResponse from "../components/botResponse"
 import QuestionField from "../components/questionField"
+import { themeOptions } from "../components/theme"
 
 const ResponsesPage = () => {
     const {sharedData, setSharedData, resetSharedData} = useContext(AppContext)
@@ -97,7 +98,7 @@ const ResponsesPage = () => {
         height="100vh"
         display="flex"
         flexDirection="column"
-        justifyContent="center"
+        justifyContent="space-between"
         alignItems="center"
         spacing={2}
       >
@@ -126,15 +127,20 @@ const ResponsesPage = () => {
             justifyContent="flex-start"
             alignItems="center"
             spacing={2}
+            width="70%"
           >
+    <Card sx={{width:"100%", borderWidth:"5px", borderColor: themeOptions.palette.secondary.main}} variant="outlined" >
+      <CardContent>
             <Typography
               key={`question-${index}`}
-              variant="h6"
-              component="h6"
+              variant="subtitle1"
+              component="subtitle1"
               gutterBottom
             >
               Question: {message.question}
             </Typography>
+          </CardContent>
+        </Card>
             <BotResponse
               key={`bing-${index}`}
               name="Bing"
@@ -149,11 +155,13 @@ const ResponsesPage = () => {
             />
           </Stack>
         ))}
+
         <QuestionField
           onChange={onChange}
           onSubmit={submit}
           value={text}
           placeholder="Ask a question"
+          sx={{position: "absolute", bottom:"0px"}}
         />
       </Box>
     )
