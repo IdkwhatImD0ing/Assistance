@@ -4,7 +4,7 @@ import { Box, Typography, TextField, InputAdornment } from "@mui/material"
 import SendIcon from '@mui/icons-material/Send';
 import AppContext from '../appContext'
 
-const QuestionField = (props) => {
+export const QuestionField = (props) => {
   const handleKeyDown = (event) => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault();
