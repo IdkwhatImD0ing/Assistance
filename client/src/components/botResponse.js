@@ -1,18 +1,20 @@
 import React from 'react';
 import { Card, CardContent, Typography, Avatar } from '@mui/material';
+import bardLogo from "../images/bardLogo.png"
+import { StaticImage } from "gatsby-plugin-image"
 
 const URL = (botName) => {
-  if (botName === "bard") {
-    return "bardLogo.png"
+  if (botName === "Bard") {
+    return bardLogo
   }
-  if (botName === "gpt3") {
-    return "gpt3Logo.png"
+  if (botName === "ChatGPT v3") {
+    return require("../images/gpt3Logo.png").default;
   }
-  if (botName === "gpt4") {
-    return "gpt4Logo.png"
+  if (botName === "ChatGPT v4") {
+    return require("../images/gpt4Logo.png").default;
   }
-  if (botName === "bing") {
-    return "bingLogo.png"
+  if (botName === "Bing") {
+    return require("../images/bingLogo.png").default;
   }
 }
 const BotResponse = (props) => {
@@ -20,7 +22,7 @@ const BotResponse = (props) => {
     // Props.text = bot text
     // Props.avatar = bot avatar
     return(
-        <Card>
+    <Card sx={{width:"70%"}}>
     <CardContent>
       <Typography variant="subtitle1">{props.name}</Typography>
       <Avatar alt={props.name} src={URL(props.name)}></Avatar>

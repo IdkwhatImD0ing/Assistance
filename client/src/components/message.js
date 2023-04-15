@@ -1,5 +1,5 @@
 import React from "react"
-import { Typography, Stack, Card, CardContent, Avatar } from '@mui/material';
+import { Typography, Stack} from '@mui/material';
 import BotResponse from "./botResponse";
 
 const Message = (props) => {
@@ -12,9 +12,10 @@ const Message = (props) => {
         <Stack
   direction="column"
   justifyContent="flex-start"
-  alignItems="flex-start"
+  alignItems="center"
   spacing={2}
->
+  sx= {{height: "90vh", width:"100vw"}}
+  >
   <BotResponse name="Bard" text={props.bardResponse}></BotResponse>
   <BotResponse name="ChatGPT v3" text={props.gpt3Response}></BotResponse>
   <BotResponse name="ChatGPT v4" text={props.gpt4Response}></BotResponse>
