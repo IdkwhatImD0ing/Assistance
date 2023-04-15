@@ -5,6 +5,12 @@ import SendIcon from '@mui/icons-material/Send';
 import AppContext from '../appContext'
 
 const QuestionField = (props) => {
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      props.onSubmit();
+    }
+  }
   return (
     <TextField
       id="outlined-basic"
@@ -14,6 +20,7 @@ const QuestionField = (props) => {
       fullWidth
       onChange={props.onChange}
       onSubmit={props.onSubmit}
+      onKeyDown={handleKeyDown}
       InputProps={{
         endAdornment: (
           <InputAdornment position="end">
@@ -28,7 +35,7 @@ const QuestionField = (props) => {
 
 
 const IndexPage = () => {
-  const {resetSharedData} = useContext(AppContext)
+  const {sharedPage, resetSharedData} = useContext(AppContext)
   const [text, setText] = useState('')
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -42,7 +49,18 @@ const IndexPage = () => {
     }
   }, [])
 
-  const submit = () => {}
+  const submit = () => {
+    // Create the user message in the schema
+    const message = {
+      role: 'user',
+      message: text,
+      bingCompleted: false,
+      bardCompleted: false,
+      gpt3Completed: false,
+      gpt4Completed: false,
+    }
+    sharedPage[sharedPage.selectedConversation].conversation.push(message)
+  }
 
   return (
     <Box
