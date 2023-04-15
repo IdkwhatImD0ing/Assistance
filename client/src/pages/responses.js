@@ -11,6 +11,11 @@ const ResponsesPage = () => {
     const [text, setText] = useState('')
 
     useEffect(() => {
+      if(conversations.length === 0) {
+        resetSharedData()
+        navigate('/')
+        return
+      }
       const lastConv = conversations[conversations.length - 1]
       if (!lastConv.bingCompleted) {
         const bingConversation = conversations.slice(0, -1).flatMap((conv) => [
