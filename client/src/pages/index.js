@@ -1,5 +1,5 @@
-
-import * as React from "react"
+import React, {useEffect, useState, useContext} from 'react'
+import { navigate } from 'gatsby'
 import { Box, Typography, TextField, InputAdornment } from "@mui/material"
 import SendIcon from '@mui/icons-material/Send';
 import AppContext from '../appContext'
@@ -36,7 +36,7 @@ const IndexPage = () => {
       const timeSincePageLoad = Date.now() - pageLoadedAt
 
       if (timeSincePageLoad < 100) {
-        resetSharedData
+        resetSharedData()
         navigate('/')
       }
     }
