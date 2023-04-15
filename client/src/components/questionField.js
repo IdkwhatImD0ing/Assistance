@@ -29,7 +29,10 @@ const QuestionField = (props) => {
           </IconButton>
         ),
       }}
-      color="secondary"
+      color="primary"
+      sx={{
+        backgroundColor: props.backgroundColor ? props.backgroundColor : 'white',
+      }}
     />
   )
 }

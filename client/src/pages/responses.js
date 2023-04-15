@@ -4,9 +4,9 @@ import AppContext from '../appContext'
 import { navigate } from 'gatsby'
 import { Box, Typography, Button, Stack, Card, CardContent, Select, MenuItem } from "@mui/material"
 import BotResponse from "../components/botResponse"
-import QuestionField from "../components/questionField"
 import { themeOptions } from "../components/theme"
-
+import BotBar from "../components/botBar";
+import TopBar from "../components/topBar";
 
 const botMapping = {
   all: [
@@ -63,12 +63,12 @@ const fetchResponse = async (apiEndpoint, conversation) => {
 
 const ResponsesPage = () => {
     const {sharedData, setSharedData} = useContext(AppContext)
-    const conversations = sharedData[sharedData.selectedConversation].conversation;
+    const conversations = sharedData.selectedConversation ? sharedData[sharedData.selectedConversation].conversation : []
     const [text, setText] = useState('')
     const [selected, setSelected] = useState('all')
 
     useEffect(() => {
-      if (conversations.length === 0) {
+      if (sharedData.selectedConversation === undefined) {
         navigate('/')
         return
       }
@@ -135,106 +135,75 @@ const ResponsesPage = () => {
     }
 
     return (
-      <Box
-        width="100vw"
-        height="100vh"
-      >
-        <Box position="sticky" top="0px">
-        <Stack
-          direction="row"
-          justifyContent="center"
+      <Box width="100vw" height="100vh" display="flex" flexDirection="column">
+        <TopBar />
+        <Box
+          display="flex"
+          flexDirection="column"
+          flex={1}
+          justifyContent="space-between"
           alignItems="center"
           spacing={2}
-          sx={{height: '10vh'}}
+          overflow={'auto'}
         >
-          <Button variant="contained">Previous</Button>
-          <Button
-            variant="contained"
-            onClick={() => {
-              navigate('/')
-            }}
-          >
-            New Chat
-          </Button>
-        </Stack>
-        </Box>
-        <Box         display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-        alignItems="center"
-        spacing={2}
-        overflow={'auto'}
->
-
-        {conversations.map((message, index) => (
-          <Stack
-            key={`stack-${index}`}
-            direction="column"
-            justifyContent="flex-start"
-            alignItems="center"
-            spacing={2}
-            width="70%"
-          >
-            <Card
-              sx={{
-                width: '100%',
-                borderWidth: '5px',
-                borderColor: themeOptions.palette.secondary.main,
-              }}
-              variant="outlined"
+          {conversations.map((message, index) => (
+            <Stack
+              key={`stack-${index}`}
+              direction="column"
+              justifyContent="flex-start"
+              alignItems="center"
+              spacing={2}
+              width="70%"
             >
-              <CardContent>
-                <Typography
-                  key={`question-${index}`}
-                  variant="subtitle1"
-                  component="subtitle1"
-                  gutterBottom
-                >
-                  Question (Asked to {message.selected}): {message.question}
-                </Typography>
-              </CardContent>
-            </Card>
-            {(message.selected === 'all' || message.selected === 'bing') && (
-              <BotResponse
-                key={`bing-${index}`}
-                name="Bing"
-                text={
-                  message.bingResponse ? message.bingResponse : 'Loading...'
-                }
-                avatar={require('../images/bingLogo.png').default}
-              />
-            )}
-            {(message.selected === 'all' || message.selected === 'bard') && (
-              <BotResponse
-                key={`bard-${index}`}
-                name="Bard"
-                text={
-                  message.bardResponse ? message.bardResponse : 'Loading...'
-                }
-                avatar={require('../images/bardLogo.png').default}
-              />
-            )}
-          </Stack>
-        ))}
-        <Select
-          value={selected}
-          onChange={(e) => setSelected(e.target.value)}
-          sx={{width: '70%'}}
-        >
-          <MenuItem value="all">All</MenuItem>
-          <MenuItem value="bing">Bing</MenuItem>
-          <MenuItem value="bard">Bard</MenuItem>
-        </Select>
+              <Card
+                sx={{
+                  width: '100%',
+                  borderWidth: '5px',
+                  borderColor: themeOptions.palette.secondary.main,
+                }}
+                variant="outlined"
+              >
+                <CardContent>
+                  <Typography
+                    key={`question-${index}`}
+                    variant="subtitle1"
+                    component="subtitle1"
+                    gutterBottom
+                  >
+                    Question (Asked to {message.selected}): {message.question}
+                  </Typography>
+                </CardContent>
+              </Card>
+              {(message.selected === 'all' || message.selected === 'bing') && (
+                <BotResponse
+                  key={`bing-${index}`}
+                  name="Bing"
+                  text={
+                    message.bingResponse ? message.bingResponse : 'Loading...'
+                  }
+                  avatar={require('../images/bingLogo.png').default}
+                />
+              )}
+              {(message.selected === 'all' || message.selected === 'bard') && (
+                <BotResponse
+                  key={`bard-${index}`}
+                  name="Bard"
+                  text={
+                    message.bardResponse ? message.bardResponse : 'Loading...'
+                  }
+                  avatar={require('../images/bardLogo.png').default}
+                />
+              )}
+            </Stack>
+          ))}
         </Box>
-        <Box width="100vw" position="sticky" bottom="0px" backgroundColor="lightblue">
-        <QuestionField
+        <BotBar
           onChange={onChange}
-          onSubmit={submit}
+          submit={submit}
           value={text}
-          placeholder="Ask a question"
-          
+          selected={selected}
+          setSelected={setSelected}
         />
-        </Box>
       </Box>
     )
 }
