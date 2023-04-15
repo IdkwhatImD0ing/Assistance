@@ -1,5 +1,6 @@
 from os import environ
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 from pydantic import BaseModel
 from typing import List
@@ -13,6 +14,13 @@ app = FastAPI()
 token = environ.get("BARD_TOKEN")
 bard_chatbot = BardChatbot(token)
 openai.api_key = environ.get("OPENAI_API_KEY")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class Message(BaseModel):
     role: str
