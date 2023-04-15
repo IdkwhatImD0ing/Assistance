@@ -1,10 +1,12 @@
 import React, {useContext, useEffect, useState} from "react"
+import ReactMarkdown from 'react-markdown';
 import AppContext from '../appContext'
 import { navigate } from 'gatsby'
 import { Box, Typography, Button, Stack, Card, CardContent } from "@mui/material"
 import BotResponse from "../components/botResponse"
 import QuestionField from "../components/questionField"
 import { themeOptions } from "../components/theme"
+
 
 const botMapping = {
   all: [

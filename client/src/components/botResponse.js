@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardContent, Typography, Avatar } from '@mui/material';
 import bardLogo from "../images/bardLogo.png"
 import { StaticImage } from "gatsby-plugin-image"
+import ReactMarkdown from 'react-markdown';
 
 // const URL = (botName) => {
 //   if (botName === "Bard") {
@@ -25,7 +26,7 @@ const BotResponse = (props) => {
     <Card sx={{width:"100%"}}>
     <CardContent>
       <Typography variant="subtitle1">{props.name}</Typography>
-      <Typography>{props.text || "Loading response..."}</Typography>
+      <Typography><ReactMarkdown children={props.text}></ReactMarkdown></Typography>
     </CardContent>
   </Card>
     )
