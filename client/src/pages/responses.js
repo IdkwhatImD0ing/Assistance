@@ -5,70 +5,107 @@ import { Box, Typography, Button, Stack } from "@mui/material"
 import BotResponse from "../components/botResponse"
 import QuestionField from "../components/questionField"
 
+const botMapping = {
+  all: [
+    {
+      name: 'Bing',
+      responseKey: 'bingResponse',
+      completedKey: 'bingCompleted',
+      apiEndpoint: 'http://localhost:5000/bingchat',
+    },
+    {
+      name: 'Bard',
+      responseKey: 'bardResponse',
+      completedKey: 'bardCompleted',
+      apiEndpoint: 'http://localhost:5000/bardchat',
+    },
+  ],
+  bing: [
+    {
+      name: 'Bing',
+      responseKey: 'bingResponse',
+      completedKey: 'bingCompleted',
+      useForAll: true,
+    },
+  ],
+  bard: [
+    {
+      name: 'Bard',
+      responseKey: 'bardResponse',
+      completedKey: 'bardCompleted',
+      useForAll: true,
+    },
+  ],
+}
+
+const buildConversation = (conversations, responseType) => {
+  return conversations.slice(0, -1).flatMap((conv) => [
+    {role: 'user', message: conv.question},
+    {role: 'bot', message: conv[responseType]},
+  ])
+}
+
+const fetchResponse = async (apiEndpoint, conversation) => {
+  const response = await fetch(apiEndpoint, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({conversation}),
+  })
+
+  const data = await response.json()
+  return data
+}
+
 const ResponsesPage = () => {
     const {sharedData, setSharedData, resetSharedData} = useContext(AppContext)
     const conversations = sharedData[sharedData.selectedConversation].conversation;
     const [text, setText] = useState('')
+    const [selected, setSelected] = useState('all')
 
     useEffect(() => {
-      if(conversations.length === 0) {
+      if (conversations.length === 0) {
         resetSharedData()
         navigate('/')
         return
       }
+
       const lastConv = conversations[conversations.length - 1]
-      if (!lastConv.bingCompleted) {
-        const bingConversation = conversations.slice(0, -1).flatMap((conv) => [
-          {role: 'user', message: conv.question},
-          {role: 'bot', message: conv.bingResponse},
-        ])
-        bingConversation.push({role: 'user', message: lastConv.question})
 
-        fetch('http://localhost:5000/bingchat', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({conversation: bingConversation}),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            lastConv.bingResponse = data.response
-            lastConv.bingCompleted = true
-            // Update the last conversation in shared data with lastConv
-            setSharedData((prev) => {
-              const newSharedData = {...prev}
-              newSharedData[prev.selectedConversation].conversation[
-                newSharedData[prev.selectedConversation].conversation.length - 1
-              ] = lastConv
-              return newSharedData
-            })
-          })
-      }
-      if (!lastConv.bardCompleted) {
-        const bardConversation = conversations.slice(0, -1).flatMap((conv) => [
-          {role: 'user', message: conv.question},
-          {role: 'bot', message: conv.bardResponse},
-        ])
-        bardConversation.push({role: 'user', message: lastConv.question})
+      const updateConversation = (responseKey, completedKey, response) => {
+        lastConv[responseKey] = response.response
+        lastConv[completedKey] = true
 
-        fetch('http://localhost:5000/bardchat', {
-          method: 'POST',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({conversation: bardConversation}),
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            lastConv.bardResponse = data.response
-            lastConv.bardCompleted = true
-            setSharedData((prev) => {
-              const newSharedData = {...prev}
-              newSharedData[prev.selectedConversation].conversation[
-                newSharedData[prev.selectedConversation].conversation.length - 1
-              ] = lastConv
-              return newSharedData
+        botMapping[selected].forEach((bot) => {
+          if (bot.useForAll) {
+            Object.keys(botMapping.all).forEach((allBot) => {
+              lastConv[botMapping.all[allBot].responseKey] = response.response
             })
-          })
+          }
+        })
+
+        setSharedData((prev) => {
+          const newSharedData = {...prev}
+          newSharedData[prev.selectedConversation].conversation[
+            newSharedData[prev.selectedConversation].conversation.length - 1
+          ] = lastConv
+          return newSharedData
+        })
       }
+
+      botMapping.all.forEach((bot) => {
+        if (!lastConv[bot.completedKey]) {
+          const conversation = buildConversation(conversations, bot.responseKey)
+          conversation.push({role: 'user', message: lastConv.question})
+
+          const apiEndpoint = bot.apiEndpoint;
+
+          fetchResponse(apiEndpoint, conversation).then((response) => {
+            updateConversation(bot.responseKey, bot.completedKey, response)
+          })
+        }
+      })
     }, [conversations.length])
+
 
     const onChange = (e) => {
       setText(e.target.value)
@@ -79,6 +116,7 @@ const ResponsesPage = () => {
       setText('')
       const message = {
         question: text,
+        selected: selected,
         bingCompleted: false,
         bardCompleted: false,
         gpt3Completed: false,
@@ -100,6 +138,7 @@ const ResponsesPage = () => {
         justifyContent="center"
         alignItems="center"
         spacing={2}
+        overflow={'auto'}
       >
         <Stack
           direction="row"

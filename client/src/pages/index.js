@@ -24,6 +24,7 @@ const IndexPage = () => {
     // Create the user message in the schema
     const message = {
       question: text,
+      selected: "all",
       bingCompleted: false,
       bardCompleted: false,
       gpt3Completed: false,
