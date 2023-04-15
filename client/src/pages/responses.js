@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from "react"
 import ReactMarkdown from 'react-markdown';
 import AppContext from '../appContext'
 import { navigate } from 'gatsby'
-import { Box, Typography, Button, Stack, Card, CardContent } from "@mui/material"
+import { Box, Typography, Button, Stack, Card, CardContent, Select, MenuItem } from "@mui/material"
 import BotResponse from "../components/botResponse"
 import QuestionField from "../components/questionField"
 import { themeOptions } from "../components/theme"
@@ -29,6 +29,7 @@ const botMapping = {
       responseKey: 'bingResponse',
       completedKey: 'bingCompleted',
       useForAll: true,
+      apiEndpoint: 'http://localhost:5000/bingchat',
     },
   ],
   bard: [
@@ -37,6 +38,7 @@ const botMapping = {
       responseKey: 'bardResponse',
       completedKey: 'bardCompleted',
       useForAll: true,
+      apiEndpoint: 'http://localhost:5000/bardchat',
     },
   ],
 }
@@ -82,6 +84,7 @@ const ResponsesPage = () => {
           if (bot.useForAll) {
             Object.keys(botMapping.all).forEach((allBot) => {
               lastConv[botMapping.all[allBot].responseKey] = response.response
+              lastConv[botMapping.all[allBot].completedKey] = true
             })
           }
         })
@@ -95,12 +98,12 @@ const ResponsesPage = () => {
         })
       }
 
-      botMapping.all.forEach((bot) => {
+      botMapping[selected].forEach((bot) => {
         if (!lastConv[bot.completedKey]) {
           const conversation = buildConversation(conversations, bot.responseKey)
           conversation.push({role: 'user', message: lastConv.question})
 
-          const apiEndpoint = bot.apiEndpoint;
+          const apiEndpoint = bot.apiEndpoint
 
           fetchResponse(apiEndpoint, conversation).then((response) => {
             updateConversation(bot.responseKey, bot.completedKey, response)
@@ -170,39 +173,62 @@ const ResponsesPage = () => {
             spacing={2}
             width="70%"
           >
-    <Card sx={{width:"100%", borderWidth:"5px", borderColor: themeOptions.palette.secondary.main}} variant="outlined" >
-      <CardContent>
-            <Typography
-              key={`question-${index}`}
-              variant="subtitle1"
-              component="subtitle1"
-              gutterBottom
+            <Card
+              sx={{
+                width: '100%',
+                borderWidth: '5px',
+                borderColor: themeOptions.palette.secondary.main,
+              }}
+              variant="outlined"
             >
-              Question: {message.question}
-            </Typography>
-          </CardContent>
-        </Card>
-            <BotResponse
-              key={`bing-${index}`}
-              name="Bing"
-              text={message.bingResponse ? message.bingResponse : 'Loading...'}
-              avatar={require('../images/bingLogo.png').default}
-            />
-            <BotResponse
-              key={`bard-${index}`}
-              name="Bard"
-              text={message.bardResponse ? message.bardResponse : 'Loading...'}
-              avatar={require('../images/bardLogo.png').default}
-            />
+              <CardContent>
+                <Typography
+                  key={`question-${index}`}
+                  variant="subtitle1"
+                  component="subtitle1"
+                  gutterBottom
+                >
+                  Question (Asked to {message.selected}): {message.question}
+                </Typography>
+              </CardContent>
+            </Card>
+            {(message.selected === 'all' || message.selected === 'bing') && (
+              <BotResponse
+                key={`bing-${index}`}
+                name="Bing"
+                text={
+                  message.bingResponse ? message.bingResponse : 'Loading...'
+                }
+                avatar={require('../images/bingLogo.png').default}
+              />
+            )}
+            {(message.selected === 'all' || message.selected === 'bard') && (
+              <BotResponse
+                key={`bard-${index}`}
+                name="Bard"
+                text={
+                  message.bardResponse ? message.bardResponse : 'Loading...'
+                }
+                avatar={require('../images/bardLogo.png').default}
+              />
+            )}
           </Stack>
         ))}
-
+        <Select
+          value={selected}
+          onChange={(e) => setSelected(e.target.value)}
+          sx={{width: '70%'}}
+        >
+          <MenuItem value="all">All</MenuItem>
+          <MenuItem value="bing">Bing</MenuItem>
+          <MenuItem value="bard">Bard</MenuItem>
+        </Select>
         <QuestionField
           onChange={onChange}
           onSubmit={submit}
           value={text}
           placeholder="Ask a question"
-          sx={{position: "absolute", bottom:"0px"}}
+          sx={{position: 'absolute', bottom: '0px'}}
         />
       </Box>
     )
