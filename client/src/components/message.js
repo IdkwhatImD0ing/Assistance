@@ -1,5 +1,6 @@
 import React from "react"
 import { Typography, Stack, Card, CardContent, Avatar } from '@mui/material';
+import BotResponse from "./botResponse";
 
 const Message = (props) => {
     // Props.question = what the user asked
@@ -14,7 +15,11 @@ const Message = (props) => {
   alignItems="flex-start"
   spacing={2}
 >
-  
+  <BotResponse name="Bard" text={props.bardResponse}></BotResponse>
+  <BotResponse name="ChatGPT v3" text={props.gpt3Response}></BotResponse>
+  <BotResponse name="ChatGPT v4" text={props.gpt4Response}></BotResponse>
+  <BotResponse name="Bing" text={props.bingResponse}></BotResponse>
+
 </Stack>
     )
 }
