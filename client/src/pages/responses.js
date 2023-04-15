@@ -1,12 +1,14 @@
-import React, {useContext, useEffect} from "react"
+import React, {useContext, useEffect, useState} from "react"
 import AppContext from '../appContext'
-import { Box, Typography, TextField, InputAdornment, Button, Stack } from "@mui/material"
-import { QuestionField } from "."
+import { navigate } from 'gatsby'
+import { Box, Typography, Button, Stack } from "@mui/material"
 import BotResponse from "../components/botResponse"
+import QuestionField from "../components/questionField"
 
 const ResponsesPage = () => {
-    const {sharedData, setSharedData} = useContext(AppContext)
+    const {sharedData, setSharedData, resetSharedData} = useContext(AppContext)
     const conversations = sharedData[sharedData.selectedConversation].conversation;
+    const [text, setText] = useState('')
 
     useEffect(() => {
       const lastConv = conversations[conversations.length - 1]
@@ -63,6 +65,27 @@ const ResponsesPage = () => {
       }
     }, [conversations.length])
 
+    const onChange = (e) => {
+      setText(e.target.value)
+    }
+
+    const submit = () => {
+      // Create the user message in the schema
+      setText('')
+      const message = {
+        question: text,
+        bingCompleted: false,
+        bardCompleted: false,
+        gpt3Completed: false,
+        gpt4Completed: false,
+      }
+      setSharedData((prev) => {
+        const newSharedData = {...prev}
+        newSharedData[prev.selectedConversation].conversation.push(message)
+        return newSharedData
+      })
+    }
+
     return (
       <Box
         width="100vw"
@@ -81,7 +104,15 @@ const ResponsesPage = () => {
           sx={{height: '10vh'}}
         >
           <Button variant="contained">Previous</Button>
-          <Button variant="contained">New Chat</Button>
+          <Button
+            variant="contained"
+            onClick={() => {
+              resetSharedData()
+              navigate('/')
+            }}
+          >
+            New Chat
+          </Button>
         </Stack>
         {conversations.map((message, index) => (
           <Stack
@@ -113,6 +144,12 @@ const ResponsesPage = () => {
             />
           </Stack>
         ))}
+        <QuestionField
+          onChange={onChange}
+          onSubmit={submit}
+          value={text}
+          placeholder="Ask a question"
+        />
       </Box>
     )
 }

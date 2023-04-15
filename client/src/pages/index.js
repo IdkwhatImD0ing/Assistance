@@ -3,36 +3,7 @@ import { navigate } from 'gatsby'
 import { Box, Typography, TextField, InputAdornment } from "@mui/material"
 import SendIcon from '@mui/icons-material/Send';
 import AppContext from '../appContext'
-
-export const QuestionField = (props) => {
-  const handleKeyDown = (event) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
-      event.preventDefault();
-      props.onSubmit();
-    }
-  }
-  return (
-    <TextField
-      id="outlined-basic"
-      label="Ask a question"
-      variant="outlined"
-      multiline
-      fullWidth
-      onChange={props.onChange}
-      onSubmit={props.onSubmit}
-      onKeyDown={handleKeyDown}
-      InputProps={{
-        endAdornment: (
-          <InputAdornment position="end">
-            <SendIcon />
-          </InputAdornment>
-        ),
-      }}
-      color="secondary"
-    />
-  )
-}
-
+import QuestionField from "../components/questionField"
 
 const IndexPage = () => {
   const {sharedData, setSharedData, resetSharedData} = useContext(AppContext)
