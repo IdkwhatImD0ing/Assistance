@@ -1,0 +1,24 @@
+{
+  "name": "assistance",
+  "version": "1.0.0",
+  "private": true,
+  "description": "assistance",
+  "author": "Bill Zhang",
+  "keywords": [
+    "gatsby"
+  ],
+  "scripts": {
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean"
+  },
+  "dependencies": {
+    "gatsby": "^5.8.1",
+    "gatsby-plugin-manifest": "^5.8.0",
+    "gatsby-plugin-sitemap": "^6.8.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}
