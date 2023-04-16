@@ -1,6 +1,6 @@
 import React from 'react'
 import {Card, CardContent, Typography, Avatar, Stack} from '@mui/material'
-import ReactMarkdown from 'react-markdown'
+import MarkdownTypewriter from './mdTypewriter'
 const BotResponse = (props) => {
   // Props.name = bot name
   // Props.text = bot text
@@ -14,8 +14,8 @@ const BotResponse = (props) => {
             {props.name}
           </Typography>
         </Stack>
-        <Typography>
-          <ReactMarkdown children={props.text}></ReactMarkdown>
+        <Typography component="div">
+          <MarkdownTypewriter text={props.text} delay={20} />
         </Typography>
       </CardContent>
     </Card>

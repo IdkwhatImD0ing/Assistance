@@ -56,6 +56,9 @@ async def ask_chatbot(conversation):
 
 @app.post("/bingchat")
 async def bingchat(conversation: Conversation):
+    return {
+        "response": "You have reached your limit for today. :("
+    }  #TODO: Remove this line
     try:
         response = await ask_chatbot(conversation.conversation)
         if ('item' in response and 'result' in response['item']
@@ -116,6 +119,9 @@ async def openai_chat(conversation: Conversation):
 
 @app.post("/openai_chat4")
 async def openai_chat(conversation: Conversation):
+    return {
+        "response": "You have reached your limit for today. :("
+    }  #TODO: Remove this line
     try:
         openai_conversation = []
         for msg in conversation.conversation:
