@@ -8,14 +8,14 @@ const BotBar = (props) => {
       width="100vw"
       position="sticky"
       bottom="0px"
-      backgroundColor="white"
+      backgroundColor="background.default"
       spacing={3}
       padding={2}
     >
       <Select
         value={props.selected}
         onChange={(e) => props.setSelected(e.target.value)}
-        sx={{width: '20%', backgroundColor: 'lightblue'}}
+        sx={{width: '20%', backgroundColor: 'background.paper'}}
       >
         <MenuItem value="all">All</MenuItem>
         <MenuItem value="bing">Bing</MenuItem>
@@ -26,7 +26,7 @@ const BotBar = (props) => {
         onSubmit={props.submit}
         value={props.text}
         placeholder="Ask a question"
-        backgroundColor="lightblue"
+        backgroundColor="background.default"
       />
     </Stack>
   )

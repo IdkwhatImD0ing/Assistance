@@ -135,7 +135,9 @@ const ResponsesPage = () => {
     }
 
     return (
-      <Box width="100vw" height="100vh" display="flex" flexDirection="column">
+      <Box width="100vw" height="100vh" display="flex" flexDirection="column"sx={{
+        backgroundColor: "background.default"
+      }}>
         <TopBar />
         <Box
           display="flex"
@@ -159,7 +161,7 @@ const ResponsesPage = () => {
                 sx={{
                   width: '100%',
                   borderWidth: '5px',
-                  borderColor: themeOptions.palette.secondary.main,
+                  borderColor: "primary.main"
                 }}
                 variant="outlined"
               >

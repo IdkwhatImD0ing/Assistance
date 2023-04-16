@@ -21,14 +21,14 @@ const PreviousQuestionSession = () => {
       alignItems="center"
       height="100vh"
       overflow="auto"
-      bgcolor="#F7F7F7"
+      bgcolor="background.default"
       fontFamily="'Montserrat', sans-serif"
     >
       <Typography
         variant="h2"
         align="center"
         mb={4}
-        color="#363636"
+        color="text.primary"
         fontWeight="bold"
       >
         Previous Sessions
@@ -44,11 +44,11 @@ const PreviousQuestionSession = () => {
           key={`question-${sharedData.selectedConversation}`}
           text={sharedData[sharedData.selectedConversation].sessionName}
           name="Session Name"
-          bgcolor="#FFF"
+          bgcolor="background.paper"
           boxShadow="0px 4px 8px rgba(0, 0, 0, 0.1)"
           borderRadius="4px"
           padding="16px"
-          color="#363636"
+          color="text.primary"
           fontWeight="bold"
         />
         {Object.keys(sharedData)
@@ -62,11 +62,11 @@ const PreviousQuestionSession = () => {
               key={`question-${key}`}
               text={sharedData[key].sessionName}
               name="Session Name"
-              bgcolor="#FFF"
+              bgcolor="background.paper"
               boxShadow="0px 4px 8px rgba(0, 0, 0, 0.1)"
               borderRadius="4px"
               padding="16px"
-              color="#363636"
+              color="text.primary"
               fontWeight="bold"
             />
           ))}

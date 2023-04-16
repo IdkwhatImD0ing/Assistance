@@ -6,10 +6,19 @@ import { blue, grey } from '@mui/material/colors';
 import AppContext from '../appContext';
 import QuestionField from '../components/questionField';
 import { v4 as uuidv4 } from 'uuid';
+import ToggleButton from '@mui/material/ToggleButton'
+import Brightness4Icon from '@mui/icons-material/Brightness4'
+import Brightness7Icon from '@mui/icons-material/Brightness7'
 
 const IndexPage = () => {
-  const { sharedData, setSharedData } = useContext(AppContext);
+  const {sharedData, setSharedData, isDarkMode, setIsDarkMode} =
+    useContext(AppContext)
+
   const [text, setText] = useState('');
+
+  const handleThemeToggle = () => {
+    setIsDarkMode((prevIsDarkMode) => !prevIsDarkMode)
+  }
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -53,13 +62,25 @@ const IndexPage = () => {
   return (
     <Box
       sx={{
-        backgroundColor: blue[500],
+        backgroundColor: "background.standard",
         height: '100vh',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
       }}
     >
+      <ToggleButton
+        value="check"
+        selected={isDarkMode}
+        onChange={handleThemeToggle}
+        sx={{
+          position: 'absolute',
+          top: '1rem',
+          right: '1rem',
+        }}
+      >
+        {isDarkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+      </ToggleButton>
       <Box
         sx={{
           width: '70vw',
@@ -68,7 +89,7 @@ const IndexPage = () => {
           justifyContent: 'center',
           alignItems: 'center',
           padding: '2rem',
-          backgroundColor: 'white',
+          backgroundColor: 'background.default',
           borderRadius: '1rem',
           boxShadow: '0px 0px 20px 0px rgba(0,0,0,0.1)',
         }}
@@ -77,7 +98,7 @@ const IndexPage = () => {
           variant="h1"
           component="h2"
           sx={{
-            color: blue[500],
+            color: "text.primary",
             fontWeight: 700,
             marginBottom: '2rem',
           }}
@@ -88,11 +109,12 @@ const IndexPage = () => {
           onChange={(e) => setText(e.target.value)}
           onSubmit={submit}
         />
+
         <Button
           variant="contained"
           sx={{
-            backgroundColor: blue[500],
-            color: 'white',
+            backgroundColor: "background.paper",
+            color: 'text.primary',
             marginTop: '2rem',
             '&:hover': {
               backgroundColor: blue[700],
@@ -105,7 +127,7 @@ const IndexPage = () => {
         </Button>
       </Box>
     </Box>
-  );
+  )
 };
 
 export default IndexPage;

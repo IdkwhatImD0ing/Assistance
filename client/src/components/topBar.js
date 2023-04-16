@@ -4,7 +4,7 @@ import { navigate } from 'gatsby'
 
 const TopBar = () => {
     return (
-      <Box position="sticky" top="0px" backgroundColor="white">
+      <Box position="sticky" top="0px" backgroundColor="background.default">
         <Stack
           width="100vw"
           direction="row"
