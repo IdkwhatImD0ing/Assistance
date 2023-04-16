@@ -20,6 +20,7 @@ const PreviousQuestionSession = () => {
       justifyContent="center"
       alignItems="center"
       height="100vh"
+      width="100vw"
       overflow="auto"
       bgcolor="background.default"
       fontFamily="'Montserrat', sans-serif"

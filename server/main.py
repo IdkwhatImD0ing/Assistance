@@ -119,9 +119,9 @@ async def openai_chat(conversation: Conversation):
 
 @app.post("/openai_chat4")
 async def openai_chat(conversation: Conversation):
-    return {
-        "response": "You have reached your limit for today. :("
-    }  #TODO: Remove this line
+    # return {
+    #     "response": "You have reached your limit for today. :("
+    # }  #TODO: Remove this line
     try:
         openai_conversation = []
         for msg in conversation.conversation:

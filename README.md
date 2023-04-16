@@ -1,7 +1,7 @@
 # Assistance
 All articulate assistants amalgamated, addressing assorted aspirations.
 ## Overview
-Assistance is an application to use and carry out conversations with multiple large language models simultaneously. It supports Bing Chat, Google Bard, ChatGPTv3.5, and ChatGPT4.0. Assistance provides a way to get the most useful and accurate results from models that have been training on different datasets and for somewhat different tasks.
+Assistance is an application to use and carry out conversations with multiple large language models simultaneously. It supports Bing Chat, Google Bard, ChatGPT3.5, and ChatGPT4.0. Assistance provides a way to get the most useful and accurate results from models that have been training on different datasets and for somewhat different tasks.
 
 ## Inspiration
 In the last few months, many different types of large language models (LLMs) have been released, including two versions of ChatGPT, Meta LLaMA, Google Bard, and Bing Chat. As each model was trained on different datasets, each one has its strengths and weaknesses. Instead of having to manually go through the major AIs, Assistance provides an intuitive way to query the models for information and continue the conversation with the models that were most helpful. 
@@ -22,8 +22,10 @@ In the last few months, many different types of large language models (LLMs) hav
 - APIs were reverse engineering and not offical, so documentation was very poor or nonexistent.
 
 ## What We Learned
-Through the development of Assistance, we learned a new front and server framework, along with how to use patchy or incomplete APIs.
+Through the development of Assistance, we learned a new frontend and server framework, along with how to use patchy or incomplete APIs.
 
 ## What's Next
-- ability to save and restore sessions for a later date
-- cleaner UI
+- Deploying the application, both frontend and backend
+- Applying rate limiting to the backend
+- Firebase authentication for user accounts and multi device access
+- Paid subscription for more features

@@ -14,7 +14,7 @@ const BotResponse = (props) => {
             {props.name}
           </Typography>
         </Stack>
-        <Typography component="div">
+        <Typography component="div" marginTop={2}>
           <MarkdownTypewriter text={props.text} delay={20} />
         </Typography>
       </CardContent>
