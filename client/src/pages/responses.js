@@ -6,6 +6,7 @@ import { Box, Typography, Button, Stack, Card, CardContent, Select, MenuItem } f
 import BotResponse from "../components/botResponse"
 import { themeOptions } from "../components/theme"
 import BotBar from "../components/botBar";
+import TopBar from "../components/topBar";
 
 const botMapping = {
   all: [
@@ -134,29 +135,12 @@ const ResponsesPage = () => {
     }
 
     return (
-      <Box width="100vw" height="100vh">
-        <Box position="sticky" top="0px">
-          <Stack
-            direction="row"
-            justifyContent="center"
-            alignItems="center"
-            spacing={2}
-            sx={{height: '10vh'}}
-          >
-            <Button variant="contained">Previous</Button>
-            <Button
-              variant="contained"
-              onClick={() => {
-                navigate('/')
-              }}
-            >
-              New Chat
-            </Button>
-          </Stack>
-        </Box>
+      <Box width="100vw" height="100vh" display="flex" flexDirection="column">
+        <TopBar />
         <Box
           display="flex"
           flexDirection="column"
+          flex={1}
           justifyContent="space-between"
           alignItems="center"
           spacing={2}
@@ -215,7 +199,7 @@ const ResponsesPage = () => {
         </Box>
         <BotBar
           onChange={onChange}
-          onSubmit={submit}
+          submit={submit}
           value={text}
           selected={selected}
           setSelected={setSelected}

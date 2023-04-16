@@ -6,8 +6,9 @@ const BotBar = (props) => {
     <Stack
       direction="row"
       width="100vw"
-      position="absolute"
+      position="sticky"
       bottom="0px"
+      backgroundColor="white"
       spacing={3}
       padding={2}
     >
