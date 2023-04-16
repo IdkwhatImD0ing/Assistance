@@ -24,14 +24,16 @@ const IndexPage = () => {
   }
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const pageLoadedAt = window.performance.timing.navigationStart
-      const timeSincePageLoad = Date.now() - pageLoadedAt
+    const pageLoadedAt = localStorage.getItem('pageLoadedAt')
+    const timeSincePageLoad = Date.now() - pageLoadedAt
 
-      if (timeSincePageLoad < 100) {
-        navigate('/')
-      }
+    if (timeSincePageLoad < 100) {
+      navigate('/')
     }
+  }, [])
+
+  useEffect(() => {
+    localStorage.setItem('pageLoadedAt', Date.now())
   }, [])
 
   if (!auth) {
