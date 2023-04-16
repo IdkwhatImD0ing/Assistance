@@ -200,6 +200,9 @@ const ResponsesPage = () => {
             alignItems="center"
             spacing={2}
             width="70%"
+            sx={{
+              marginTop: '20px',
+            }}
           >
             <Card
               sx={{

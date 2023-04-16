@@ -107,7 +107,7 @@ const IndexPage = () => {
         </Typography>
         <QuestionField
           onChange={(e) => setText(e.target.value)}
-          onSubmit={submit}
+          submit={submit}
         />
 
         <Button
@@ -121,7 +121,7 @@ const IndexPage = () => {
             },
           }}
           endIcon={<SendIcon />}
-          submit={submit}
+          onClick={submit}
         >
           Send
         </Button>
