@@ -4,9 +4,8 @@ import AppContext from '../appContext'
 import { navigate } from 'gatsby'
 import { Box, Typography, Button, Stack, Card, CardContent, Select, MenuItem } from "@mui/material"
 import BotResponse from "../components/botResponse"
-import QuestionField from "../components/questionField"
 import { themeOptions } from "../components/theme"
-
+import BotBar from "../components/botBar";
 
 const botMapping = {
   all: [
@@ -63,12 +62,12 @@ const fetchResponse = async (apiEndpoint, conversation) => {
 
 const ResponsesPage = () => {
     const {sharedData, setSharedData} = useContext(AppContext)
-    const conversations = sharedData[sharedData.selectedConversation].conversation;
+    const conversations = sharedData.selectedConversation ? sharedData[sharedData.selectedConversation].conversation : []
     const [text, setText] = useState('')
     const [selected, setSelected] = useState('all')
 
     useEffect(() => {
-      if (conversations.length === 0) {
+      if (sharedData.selectedConversation === undefined) {
         navigate('/')
         return
       }
@@ -213,25 +212,9 @@ const ResponsesPage = () => {
             )}
           </Stack>
         ))}
-        <Select
-          value={selected}
-          onChange={(e) => setSelected(e.target.value)}
-          sx={{width: '70%'}}
-        >
-          <MenuItem value="all">All</MenuItem>
-          <MenuItem value="bing">Bing</MenuItem>
-          <MenuItem value="bard">Bard</MenuItem>
-        </Select>
+        
         </Box>
-        <Box width="100vw" position="sticky" bottom="0px" backgroundColor="lightblue">
-        <QuestionField
-          onChange={onChange}
-          onSubmit={submit}
-          value={text}
-          placeholder="Ask a question"
-          
-        />
-        </Box>
+        <BotBar onChange={onChange} onSubmit={submit} value={text} selected={selected} setSelected={setSelected}/>
       </Box>
     )
 }
