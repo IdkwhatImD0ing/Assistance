@@ -1,5 +1,5 @@
 from os import environ
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 from pydantic import BaseModel
@@ -8,6 +8,7 @@ from EdgeGPT import Chatbot, ConversationStyle
 from Bard import Chatbot as BardChatbot
 import openai
 from dotenv import load_dotenv
+from starlette.responses import JSONResponse
 
 load_dotenv()
 
@@ -40,25 +41,21 @@ async def root():
 
 
 async def ask_chatbot(conversation):
-    try:
-        bot = Chatbot(cookiePath=environ.get("BING_PATH"))
-        conversation_text = "\n".join(
-            [f"{msg.role}: {msg.message}" for msg in conversation])
-        response = await bot.ask(
-            prompt=conversation_text,
-            conversation_style=ConversationStyle.creative,
-            wss_link="wss://sydney.bing.com/sydney/ChatHub")
-        await bot.close()
-        return response
-    except Exception as e:
-        raise HTTPException(status_code=500, response="Internal Server Error")
+    bot = Chatbot(cookiePath=environ.get("BING_PATH"))
+    conversation_text = "\n".join(
+        [f"{msg.role}: {msg.message}" for msg in conversation])
+    response = await bot.ask(prompt=conversation_text,
+                             conversation_style=ConversationStyle.creative,
+                             wss_link="wss://sydney.bing.com/sydney/ChatHub")
+    await bot.close()
+    return response
 
 
 @app.post("/bingchat")
 async def bingchat(conversation: Conversation):
-    return {
-        "response": "You have reached your limit for today. :("
-    }  #TODO: Remove this line
+    # return {
+    #     "response": "You have reached your limit for today. :("
+    # }  #TODO: Remove this line
     try:
         response = await ask_chatbot(conversation.conversation)
         if ('item' in response and 'result' in response['item']
@@ -71,18 +68,16 @@ async def bingchat(conversation: Conversation):
                 "text", "Sorry, I cannot answer that. :(")
         }
     except Exception as e:
-        raise HTTPException(status_code=500, response="Internal Server Error")
+        return JSONResponse(status_code=500,
+                            content={"response": "Internal Server Error"})
 
 
 def ask_bard_chatbot(conversation):
-    try:
-        bard_chatbot = BardChatbot(token)
-        conversation_text = "\n".join(
-            [f"{msg.role}: {msg.message}" for msg in conversation])
-        response = bard_chatbot.ask(conversation_text)
-        return response
-    except Exception as e:
-        raise HTTPException(status_code=500, response="Internal Server Error")
+    bard_chatbot = BardChatbot(token)
+    conversation_text = "\n".join(
+        [f"{msg.role}: {msg.message}" for msg in conversation])
+    response = bard_chatbot.ask(conversation_text)
+    return response
 
 
 @app.post("/bardchat")
@@ -91,7 +86,8 @@ def bardchat(conversation: Conversation):
         response = ask_bard_chatbot(conversation.conversation)
         return {"response": response["content"]}
     except Exception as e:
-        raise HTTPException(status_code=500, response="Internal Server Error")
+        return JSONResponse(status_code=500,
+                            content={"response": "Internal Server Error"})
 
 
 @app.post("/openai_chat3.5")
@@ -114,7 +110,8 @@ async def openai_chat(conversation: Conversation):
             model="gpt-3.5-turbo", messages=openai_conversation)
         return {"response": response.choices[0].message.content.strip()}
     except Exception as e:
-        raise HTTPException(status_code=500, response="Internal Server Error")
+        return JSONResponse(status_code=500,
+                            content={"response": "Internal Server Error"})
 
 
 @app.post("/openai_chat4")
@@ -140,4 +137,5 @@ async def openai_chat(conversation: Conversation):
             model="gpt-4", messages=openai_conversation)
         return {"response": response.choices[0].message.content.strip()}
     except Exception as e:
-        raise HTTPException(status_code=500, response="Internal Server Error")
+        return JSONResponse(status_code=500,
+                            content={"response": "Internal Server Error"})
