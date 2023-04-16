@@ -1,7 +1,7 @@
 import React, {useContext, useEffect} from 'react'
 import {Typography, Stack, Box} from '@mui/material'
 import {navigate} from 'gatsby'
-import BotResponse from '../components/botResponse'
+import Session from '../components/session'
 import AppContext from '../appContext'
 
 const PreviousQuestionSession = () => {
@@ -40,34 +40,30 @@ const PreviousQuestionSession = () => {
         spacing={3}
         width="50%"
       >
-        <Box
-          onClick={() => {
-            navigate('/responses')
-          }}
-        >
-          <BotResponse
-            key={`question-${sharedData.selectedConversation}`}
-            text={
-              sharedData[sharedData.selectedConversation]
-                ? sharedData[sharedData.selectedConversation].sessionName
-                : ''
-            }
-            name="Current Session"
-            bgcolor="background.paper"
-            boxShadow="0px 4px 8px rgba(0, 0, 0, 0.1)"
-            borderRadius="4px"
-            padding="16px"
-            color="text.primary"
-            fontWeight="bold"
-          />
-        </Box>
+        {sharedData.selectedConversation && (
+          <Box
+            onClick={() => {
+              navigate('/responses')
+            }}
+          >
+            <Session
+              key={`question-${sharedData.selectedConversation}`}
+              text={
+                sharedData[sharedData.selectedConversation]
+                  ? sharedData[sharedData.selectedConversation].sessionName
+                  : ''
+              }
+              name="Current Session"
+            />
+          </Box>
+        )}
         {Object.keys(sharedData)
           .filter(
             (key) =>
               key !== sharedData.selectedConversation &&
               key !== 'selectedConversation',
           )
-          .map((key) => (
+          .map((key, index) => (
             <Box
               key={`box-${key}`}
               onClick={() => {
@@ -79,16 +75,10 @@ const PreviousQuestionSession = () => {
                 navigate('/responses')
               }}
             >
-              <BotResponse
+              <Session
                 key={`question-${key}`}
                 text={sharedData[key].sessionName}
-                name="Session Name"
-                bgcolor="background.paper"
-                boxShadow="0px 4px 8px rgba(0, 0, 0, 0.1)"
-                borderRadius="4px"
-                padding="16px"
-                color="text.primary"
-                fontWeight="bold"
+                name={`Session ${index + 1}`}
               />
             </Box>
           ))}

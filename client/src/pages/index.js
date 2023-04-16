@@ -1,8 +1,7 @@
 import React, {useEffect, useState, useContext} from 'react'
 import {navigate} from 'gatsby'
-import {Box, Typography, TextField, Button} from '@mui/material'
+import {Box, Typography, Stack, Button} from '@mui/material'
 import SendIcon from '@mui/icons-material/Send'
-import {blue, grey} from '@mui/material/colors'
 import AppContext from '../appContext'
 import QuestionField from '../components/questionField'
 import {v4 as uuidv4} from 'uuid'
@@ -109,22 +108,45 @@ const IndexPage = () => {
           onChange={(e) => setText(e.target.value)}
           submit={submit}
         />
-
-        <Button
-          variant="contained"
-          sx={{
-            backgroundColor: 'background.paper',
-            color: 'text.primary',
-            marginTop: '2rem',
-            '&:hover': {
-              backgroundColor: 'background.standard',
-            },
-          }}
-          endIcon={<SendIcon />}
-          onClick={submit}
+        <Stack
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+          spacing={2}
+          marginTop="2rem"
         >
-          Send
-        </Button>
+          {Object.keys(sharedData).length > 0 && (
+            <Button
+              variant="contained"
+              sx={{
+                backgroundColor: 'background.paper',
+                color: 'text.primary',
+                '&:hover': {
+                  backgroundColor: 'background.standard',
+                },
+              }}
+              onClick={() => {
+                navigate('/previousSession')
+              }}
+            >
+              Previous Conversations
+            </Button>
+          )}
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: 'background.paper',
+              color: 'text.primary',
+              '&:hover': {
+                backgroundColor: 'background.standard',
+              },
+            }}
+            endIcon={<SendIcon />}
+            onClick={submit}
+          >
+            Send
+          </Button>
+        </Stack>
       </Box>
     </Box>
   )
