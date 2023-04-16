@@ -134,90 +134,92 @@ const ResponsesPage = () => {
     }
 
     return (
-      <Box
-        width="100vw"
-        height="100vh"
-      >
+      <Box width="100vw" height="100vh">
         <Box position="sticky" top="0px">
-        <Stack
-          direction="row"
-          justifyContent="center"
-          alignItems="center"
-          spacing={2}
-          sx={{height: '10vh'}}
-        >
-          <Button variant="contained">Previous</Button>
-          <Button
-            variant="contained"
-            onClick={() => {
-              navigate('/')
-            }}
-          >
-            New Chat
-          </Button>
-        </Stack>
-        </Box>
-        <Box         display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-        alignItems="center"
-        spacing={2}
-        overflow={'auto'}
->
-
-        {conversations.map((message, index) => (
           <Stack
-            key={`stack-${index}`}
-            direction="column"
-            justifyContent="flex-start"
+            direction="row"
+            justifyContent="center"
             alignItems="center"
             spacing={2}
-            width="70%"
+            sx={{height: '10vh'}}
           >
-            <Card
-              sx={{
-                width: '100%',
-                borderWidth: '5px',
-                borderColor: themeOptions.palette.secondary.main,
+            <Button variant="contained">Previous</Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                navigate('/')
               }}
-              variant="outlined"
             >
-              <CardContent>
-                <Typography
-                  key={`question-${index}`}
-                  variant="subtitle1"
-                  component="subtitle1"
-                  gutterBottom
-                >
-                  Question (Asked to {message.selected}): {message.question}
-                </Typography>
-              </CardContent>
-            </Card>
-            {(message.selected === 'all' || message.selected === 'bing') && (
-              <BotResponse
-                key={`bing-${index}`}
-                name="Bing"
-                text={
-                  message.bingResponse ? message.bingResponse : 'Loading...'
-                }
-                avatar={require('../images/bingLogo.png').default}
-              />
-            )}
-            {(message.selected === 'all' || message.selected === 'bard') && (
-              <BotResponse
-                key={`bard-${index}`}
-                name="Bard"
-                text={
-                  message.bardResponse ? message.bardResponse : 'Loading...'
-                }
-                avatar={require('../images/bardLogo.png').default}
-              />
-            )}
+              New Chat
+            </Button>
           </Stack>
-        ))}
-        
         </Box>
-        <BotBar onChange={onChange} onSubmit={submit} value={text} selected={selected} setSelected={setSelected}/>
+        <Box
+          display="flex"
+          flexDirection="column"
+          justifyContent="space-between"
+          alignItems="center"
+          spacing={2}
+          overflow={'auto'}
+        >
+          {conversations.map((message, index) => (
+            <Stack
+              key={`stack-${index}`}
+              direction="column"
+              justifyContent="flex-start"
+              alignItems="center"
+              spacing={2}
+              width="70%"
+            >
+              <Card
+                sx={{
+                  width: '100%',
+                  borderWidth: '5px',
+                  borderColor: themeOptions.palette.secondary.main,
+                }}
+                variant="outlined"
+              >
+                <CardContent>
+                  <Typography
+                    key={`question-${index}`}
+                    variant="subtitle1"
+                    component="subtitle1"
+                    gutterBottom
+                  >
+                    Question (Asked to {message.selected}): {message.question}
+                  </Typography>
+                </CardContent>
+              </Card>
+              {(message.selected === 'all' || message.selected === 'bing') && (
+                <BotResponse
+                  key={`bing-${index}`}
+                  name="Bing"
+                  text={
+                    message.bingResponse ? message.bingResponse : 'Loading...'
+                  }
+                  avatar={require('../images/bingLogo.png').default}
+                />
+              )}
+              {(message.selected === 'all' || message.selected === 'bard') && (
+                <BotResponse
+                  key={`bard-${index}`}
+                  name="Bard"
+                  text={
+                    message.bardResponse ? message.bardResponse : 'Loading...'
+                  }
+                  avatar={require('../images/bardLogo.png').default}
+                />
+              )}
+            </Stack>
+          ))}
+        </Box>
+        <BotBar
+          onChange={onChange}
+          onSubmit={submit}
+          value={text}
+          selected={selected}
+          setSelected={setSelected}
+        />
       </Box>
     )
 }
