@@ -1,7 +1,7 @@
 # 🤖 **Assistance**
 _All articulate assistants amalgamated, addressing assorted aspirations._
 
-[![Demo Video](https://img.shields.io/badge/-Demo%20Video-red)](https://youtu.be/HF43yPD6d2E)
+[![Demo Video](https://img.shields.io/badge/-Demo%20Video-red)](https://youtu.be/DAuMnWCKtSk)
 
 ## 🌐 **Overview**
 **Assistance** is an application to use and carry out conversations with multiple large language models simultaneously. It supports **Bing Chat**, **Google Bard**, **ChatGPT3.5**, and **ChatGPT4.0**. Assistance provides a way to get the most useful and accurate results from models that have been training on different datasets and for somewhat different tasks.
