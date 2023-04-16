@@ -1,5 +1,5 @@
 from os import environ
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import asyncio
 from pydantic import BaseModel
@@ -12,8 +12,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = FastAPI()
+
 token = environ.get("BARD_TOKEN")
 openai.api_key = environ.get("OPENAI_API_KEY")
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -38,79 +40,98 @@ async def root():
 
 
 async def ask_chatbot(conversation):
-    bot = Chatbot(cookiePath=environ.get("BING_PATH"))
-    conversation_text = "\n".join(
-        [f"{msg.role}: {msg.message}" for msg in conversation])
-    response = await bot.ask(prompt=conversation_text,
-                             conversation_style=ConversationStyle.creative,
-                             wss_link="wss://sydney.bing.com/sydney/ChatHub")
-    await bot.close()
-    return response
+    try:
+        bot = Chatbot(cookiePath=environ.get("BING_PATH"))
+        conversation_text = "\n".join(
+            [f"{msg.role}: {msg.message}" for msg in conversation])
+        response = await bot.ask(
+            prompt=conversation_text,
+            conversation_style=ConversationStyle.creative,
+            wss_link="wss://sydney.bing.com/sydney/ChatHub")
+        await bot.close()
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, response="Internal Server Error")
 
 
 @app.post("/bingchat")
 async def bingchat(conversation: Conversation):
-    response = await ask_chatbot(conversation.conversation)
-    if ('item' in response and 'result' in response['item']
-            and 'value' in response['item']['result']
-            and response['item']['result']['value'] == 'Throttled'):
-        return {"response": "You have reached your limit for today. :("}
-    return {
-        "response":
-        response["item"]["messages"][-1].get(
-            "text", "Sorry, I cannot answer that. :(")
-    }
+    try:
+        response = await ask_chatbot(conversation.conversation)
+        if ('item' in response and 'result' in response['item']
+                and 'value' in response['item']['result']
+                and response['item']['result']['value'] == 'Throttled'):
+            return {"response": "You have reached your limit for today. :("}
+        return {
+            "response":
+            response["item"]["messages"][-1].get(
+                "text", "Sorry, I cannot answer that. :(")
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, response="Internal Server Error")
 
 
 def ask_bard_chatbot(conversation):
-    bard_chatbot = BardChatbot(token)
-    conversation_text = "\n".join(
-        [f"{msg.role}: {msg.message}" for msg in conversation])
-    response = bard_chatbot.ask(conversation_text)
-    return response
+    try:
+        bard_chatbot = BardChatbot(token)
+        conversation_text = "\n".join(
+            [f"{msg.role}: {msg.message}" for msg in conversation])
+        response = bard_chatbot.ask(conversation_text)
+        return response
+    except Exception as e:
+        raise HTTPException(status_code=500, response="Internal Server Error")
 
 
 @app.post("/bardchat")
 def bardchat(conversation: Conversation):
-    response = ask_bard_chatbot(conversation.conversation)
-    return {"response": response["content"]}
+    try:
+        response = ask_bard_chatbot(conversation.conversation)
+        return {"response": response["content"]}
+    except Exception as e:
+        raise HTTPException(status_code=500, response="Internal Server Error")
 
 
 @app.post("/openai_chat3.5")
 async def openai_chat(conversation: Conversation):
-    openai_conversation = []
-    for msg in conversation.conversation:
-        if msg.role == "bot":
-            openai_conversation.append({
-                "role": "assistant",
-                "content": msg.message
-            })
-        else:
-            openai_conversation.append({
-                "role": msg.role,
-                "content": msg.message
-            })
+    try:
+        openai_conversation = []
+        for msg in conversation.conversation:
+            if msg.role == "bot":
+                openai_conversation.append({
+                    "role": "assistant",
+                    "content": msg.message
+                })
+            else:
+                openai_conversation.append({
+                    "role": msg.role,
+                    "content": msg.message
+                })
 
-    response = openai.ChatCompletion.create(model="gpt-3.5-turbo",
-                                            messages=openai_conversation)
-    return {"response": response.choices[0].message.content.strip()}
+        response = await openai.ChatCompletion.acreate(
+            model="gpt-3.5-turbo", messages=openai_conversation)
+        return {"response": response.choices[0].message.content.strip()}
+    except Exception as e:
+        raise HTTPException(status_code=500, response="Internal Server Error")
 
 
 @app.post("/openai_chat4")
 async def openai_chat(conversation: Conversation):
-    openai_conversation = []
-    for msg in conversation.conversation:
-        if msg.role == "bot":
-            openai_conversation.append({
-                "role": "assistant",
-                "content": msg.message
-            })
-        else:
-            openai_conversation.append({
-                "role": msg.role,
-                "content": msg.message
-            })
+    try:
+        openai_conversation = []
+        for msg in conversation.conversation:
+            if msg.role == "bot":
+                openai_conversation.append({
+                    "role": "assistant",
+                    "content": msg.message
+                })
+            else:
+                openai_conversation.append({
+                    "role": msg.role,
+                    "content": msg.message
+                })
 
-    response = openai.ChatCompletion.create(model="gpt-4",
-                                            messages=openai_conversation)
-    return {"response": response.choices[0].message.content.strip()}
+        response = await openai.ChatCompletion.acreate(
+            model="gpt-4", messages=openai_conversation)
+        return {"response": response.choices[0].message.content.strip()}
+    except Exception as e:
+        raise HTTPException(status_code=500, response="Internal Server Error")

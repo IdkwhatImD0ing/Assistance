@@ -4,12 +4,11 @@ import {navigate} from 'gatsby'
 import {
   Box,
   Typography,
-  Button,
   Stack,
   Card,
   CardContent,
-  Select,
-  MenuItem,
+  Snackbar,
+  Alert,
 } from '@mui/material'
 import BotResponse from '../components/botResponse'
 import BotBar from '../components/botBar'
@@ -105,6 +104,11 @@ const ResponsesPage = () => {
     : []
   const [text, setText] = useState('')
   const [selected, setSelected] = useState('all')
+  const [showSnackbar, setShowSnackbar] = useState(false)
+
+  const handleSnackbarClose = () => {
+    setShowSnackbar(false)
+  }
 
   useEffect(() => {
     if (sharedData.selectedConversation === undefined) {
@@ -155,6 +159,19 @@ const ResponsesPage = () => {
   }
 
   const submit = () => {
+    // Check if any of the completed flags are false
+    const lastConv = conversations[conversations.length - 1]
+    const completedFlags = [
+      lastConv.bingCompleted,
+      lastConv.bardCompleted,
+      lastConv.gpt3Completed,
+      lastConv.gpt4Completed,
+    ]
+    if (completedFlags.some((flag) => !flag)) {
+      setShowSnackbar(true)
+      return
+    }
+
     // Create the user message in the schema
     setText('')
     const message = {
@@ -182,7 +199,17 @@ const ResponsesPage = () => {
         backgroundColor: 'background.default',
       }}
     >
-      <TopBar />
+      <Snackbar
+        open={showSnackbar}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        anchorOrigin={{vertical: 'top', horizontal: 'left'}}
+      >
+        <Alert onClose={handleSnackbarClose} severity="warning">
+          Chatbot is still generating. Please wait.
+        </Alert>
+      </Snackbar>
+      <TopBar setShowSnackbar={setShowSnackbar} />
       <Box
         display="flex"
         flexDirection="column"

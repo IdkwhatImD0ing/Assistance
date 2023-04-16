@@ -47,7 +47,11 @@ const PreviousQuestionSession = () => {
         >
           <BotResponse
             key={`question-${sharedData.selectedConversation}`}
-            text={sharedData[sharedData.selectedConversation].sessionName}
+            text={
+              sharedData[sharedData.selectedConversation]
+                ? sharedData[sharedData.selectedConversation].sessionName
+                : ''
+            }
             name="Current Session"
             bgcolor="background.paper"
             boxShadow="0px 4px 8px rgba(0, 0, 0, 0.1)"
