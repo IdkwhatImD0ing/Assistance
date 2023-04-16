@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { navigate } from 'gatsby';
-import { Box, Typography, TextField, Button } from '@mui/material';
-import SendIcon from '@mui/icons-material/Send';
-import { blue, grey } from '@mui/material/colors';
-import AppContext from '../appContext';
-import QuestionField from '../components/questionField';
-import { v4 as uuidv4 } from 'uuid';
+import React, {useEffect, useState, useContext} from 'react'
+import {navigate} from 'gatsby'
+import {Box, Typography, TextField, Button} from '@mui/material'
+import SendIcon from '@mui/icons-material/Send'
+import {blue, grey} from '@mui/material/colors'
+import AppContext from '../appContext'
+import QuestionField from '../components/questionField'
+import {v4 as uuidv4} from 'uuid'
 import ToggleButton from '@mui/material/ToggleButton'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
@@ -14,7 +14,7 @@ const IndexPage = () => {
   const {sharedData, setSharedData, isDarkMode, setIsDarkMode} =
     useContext(AppContext)
 
-  const [text, setText] = useState('');
+  const [text, setText] = useState('')
 
   const handleThemeToggle = () => {
     setIsDarkMode((prevIsDarkMode) => !prevIsDarkMode)
@@ -22,18 +22,18 @@ const IndexPage = () => {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const pageLoadedAt = window.performance.timing.navigationStart;
-      const timeSincePageLoad = Date.now() - pageLoadedAt;
+      const pageLoadedAt = window.performance.timing.navigationStart
+      const timeSincePageLoad = Date.now() - pageLoadedAt
 
       if (timeSincePageLoad < 100) {
-        navigate('/');
+        navigate('/')
       }
     }
-  }, []);
+  }, [])
 
   const submit = () => {
     // Create a new session
-    const initialUUID = uuidv4();
+    const initialUUID = uuidv4()
 
     // Create the user message in the schema
     const message = {
@@ -43,26 +43,26 @@ const IndexPage = () => {
       bardCompleted: false,
       gpt3Completed: false,
       gpt4Completed: false,
-    };
+    }
 
     setSharedData((prev) => {
-      const newSharedData = { ...prev };
-      newSharedData.selectedConversation = initialUUID;
+      const newSharedData = {...prev}
+      newSharedData.selectedConversation = initialUUID
       newSharedData[initialUUID] = {
         editable: true,
         conversation: [message],
         sessionName: text,
-      };
-      return newSharedData;
-    });
+      }
+      return newSharedData
+    })
 
-    navigate('/responses');
-  };
+    navigate('/responses')
+  }
 
   return (
     <Box
       sx={{
-        backgroundColor: "background.standard",
+        backgroundColor: 'background.standard',
         height: '100vh',
         display: 'flex',
         justifyContent: 'center',
@@ -98,7 +98,7 @@ const IndexPage = () => {
           variant="h1"
           component="h2"
           sx={{
-            color: "text.primary",
+            color: 'text.primary',
             fontWeight: 700,
             marginBottom: '2rem',
           }}
@@ -113,23 +113,23 @@ const IndexPage = () => {
         <Button
           variant="contained"
           sx={{
-            backgroundColor: "background.paper",
+            backgroundColor: 'background.paper',
             color: 'text.primary',
             marginTop: '2rem',
             '&:hover': {
-              backgroundColor: blue[700],
+              backgroundColor: 'background.standard',
             },
           }}
           endIcon={<SendIcon />}
-          onClick={submit}
+          submit={submit}
         >
           Send
         </Button>
       </Box>
     </Box>
   )
-};
+}
 
-export default IndexPage;
+export default IndexPage
 
-export const Head = () => <title>Home Page</title>;
+export const Head = () => <title>Home Page</title>

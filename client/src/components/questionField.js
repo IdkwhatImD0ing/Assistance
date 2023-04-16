@@ -1,12 +1,12 @@
 import React from 'react'
-import { TextField, InputAdornment, IconButton } from '@mui/material'
+import {TextField, InputAdornment, IconButton} from '@mui/material'
 import SendIcon from '@mui/icons-material/Send'
 
 const QuestionField = (props) => {
   const handleKeyDown = (event) => {
     if (event.key === 'Enter' && !event.shiftKey) {
       event.preventDefault()
-      props.onSubmit()
+      props.submit()
     }
   }
   return (
@@ -16,16 +16,15 @@ const QuestionField = (props) => {
       variant="outlined"
       multiline
       fullWidth
-      value = {props.value}
+      value={props.value}
       onChange={props.onChange}
-      onSubmit={props.onSubmit}
       onKeyDown={handleKeyDown}
       InputProps={{
         endAdornment: (
-          <IconButton onClick={props.onSubmit}>
-          <InputAdornment position="end">
-            <SendIcon />
-          </InputAdornment>
+          <IconButton onClick={props.submit}>
+            <InputAdornment position="end">
+              <SendIcon />
+            </InputAdornment>
           </IconButton>
         ),
       }}

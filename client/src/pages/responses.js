@@ -1,12 +1,19 @@
-import React, {useContext, useEffect, useState} from "react"
-import ReactMarkdown from 'react-markdown';
+import React, {useContext, useEffect, useState} from 'react'
 import AppContext from '../appContext'
-import { navigate } from 'gatsby'
-import { Box, Typography, Button, Stack, Card, CardContent, Select, MenuItem } from "@mui/material"
-import BotResponse from "../components/botResponse"
-import { themeOptions } from "../components/theme"
-import BotBar from "../components/botBar";
-import TopBar from "../components/topBar";
+import {navigate} from 'gatsby'
+import {
+  Box,
+  Typography,
+  Button,
+  Stack,
+  Card,
+  CardContent,
+  Select,
+  MenuItem,
+} from '@mui/material'
+import BotResponse from '../components/botResponse'
+import BotBar from '../components/botBar'
+import TopBar from '../components/topBar'
 
 const botMapping = {
   all: [
@@ -21,6 +28,18 @@ const botMapping = {
       responseKey: 'bardResponse',
       completedKey: 'bardCompleted',
       apiEndpoint: 'http://localhost:5000/bardchat',
+    },
+    {
+      name: 'GPT3',
+      responseKey: 'gpt3Response',
+      completedKey: 'gpt3Completed',
+      apiEndpoint: 'http://localhost:5000/openai_chat3.5',
+    },
+    {
+      name: 'GPT4',
+      responseKey: 'gpt4Response',
+      completedKey: 'gpt4Completed',
+      apiEndpoint: 'http://localhost:5000/openai_chat4',
     },
   ],
   bing: [
@@ -39,6 +58,24 @@ const botMapping = {
       completedKey: 'bardCompleted',
       useForAll: true,
       apiEndpoint: 'http://localhost:5000/bardchat',
+    },
+  ],
+  gpt3: [
+    {
+      name: 'GPT3',
+      responseKey: 'gpt3Response',
+      completedKey: 'gpt3Completed',
+      useForAll: true,
+      apiEndpoint: 'http://localhost:5000/openai_chat3.5',
+    },
+  ],
+  gpt4: [
+    {
+      name: 'GPT4',
+      responseKey: 'gpt4Response',
+      completedKey: 'gpt4Completed',
+      useForAll: true,
+      apiEndpoint: 'http://localhost:5000/openai_chat4',
     },
   ],
 }
@@ -62,151 +99,178 @@ const fetchResponse = async (apiEndpoint, conversation) => {
 }
 
 const ResponsesPage = () => {
-    const {sharedData, setSharedData} = useContext(AppContext)
-    const conversations = sharedData.selectedConversation ? sharedData[sharedData.selectedConversation].conversation : []
-    const [text, setText] = useState('')
-    const [selected, setSelected] = useState('all')
+  const {sharedData, setSharedData} = useContext(AppContext)
+  const conversations = sharedData.selectedConversation
+    ? sharedData[sharedData.selectedConversation].conversation
+    : []
+  const [text, setText] = useState('')
+  const [selected, setSelected] = useState('all')
 
-    useEffect(() => {
-      if (sharedData.selectedConversation === undefined) {
-        navigate('/')
-        return
-      }
+  useEffect(() => {
+    if (sharedData.selectedConversation === undefined) {
+      navigate('/')
+      return
+    }
 
-      const lastConv = conversations[conversations.length - 1]
+    const lastConv = conversations[conversations.length - 1]
 
-      const updateConversation = (responseKey, completedKey, response) => {
-        lastConv[responseKey] = response.response
-        lastConv[completedKey] = true
-
-        botMapping[selected].forEach((bot) => {
-          if (bot.useForAll) {
-            Object.keys(botMapping.all).forEach((allBot) => {
-              lastConv[botMapping.all[allBot].responseKey] = response.response
-              lastConv[botMapping.all[allBot].completedKey] = true
-            })
-          }
-        })
-
-        setSharedData((prev) => {
-          const newSharedData = {...prev}
-          newSharedData[prev.selectedConversation].conversation[
-            newSharedData[prev.selectedConversation].conversation.length - 1
-          ] = lastConv
-          return newSharedData
-        })
-      }
+    const updateConversation = (responseKey, completedKey, response) => {
+      lastConv[responseKey] = response.response
+      lastConv[completedKey] = true
 
       botMapping[selected].forEach((bot) => {
-        if (!lastConv[bot.completedKey]) {
-          const conversation = buildConversation(conversations, bot.responseKey)
-          conversation.push({role: 'user', message: lastConv.question})
-
-          const apiEndpoint = bot.apiEndpoint
-
-          fetchResponse(apiEndpoint, conversation).then((response) => {
-            updateConversation(bot.responseKey, bot.completedKey, response)
+        if (bot.useForAll) {
+          Object.keys(botMapping.all).forEach((allBot) => {
+            lastConv[botMapping.all[allBot].responseKey] = response.response
+            lastConv[botMapping.all[allBot].completedKey] = true
           })
         }
       })
-    }, [conversations.length])
 
-
-    const onChange = (e) => {
-      setText(e.target.value)
-    }
-
-    const submit = () => {
-      // Create the user message in the schema
-      setText('')
-      const message = {
-        question: text,
-        selected: selected,
-        bingCompleted: false,
-        bardCompleted: false,
-        gpt3Completed: false,
-        gpt4Completed: false,
-      }
       setSharedData((prev) => {
         const newSharedData = {...prev}
-        newSharedData[prev.selectedConversation].conversation.push(message)
+        newSharedData[prev.selectedConversation].conversation[
+          newSharedData[prev.selectedConversation].conversation.length - 1
+        ] = lastConv
         return newSharedData
       })
     }
 
-    return (
-      <Box width="100vw" height="100vh" display="flex" flexDirection="column"sx={{
-        backgroundColor: "background.default"
-      }}>
-        <TopBar />
-        <Box
-          display="flex"
-          flexDirection="column"
-          flex={1}
-          justifyContent="space-between"
-          alignItems="center"
-          spacing={2}
-          overflow={'auto'}
-        >
-          {conversations.map((message, index) => (
-            <Stack
-              key={`stack-${index}`}
-              direction="column"
-              justifyContent="flex-start"
-              alignItems="center"
-              spacing={2}
-              width="70%"
+    botMapping[selected].forEach((bot) => {
+      if (!lastConv[bot.completedKey]) {
+        const conversation = buildConversation(conversations, bot.responseKey)
+        conversation.push({role: 'user', message: lastConv.question})
+
+        const apiEndpoint = bot.apiEndpoint
+
+        fetchResponse(apiEndpoint, conversation).then((response) => {
+          updateConversation(bot.responseKey, bot.completedKey, response)
+        })
+      }
+    })
+  }, [conversations.length])
+
+  const onChange = (e) => {
+    setText(e.target.value)
+  }
+
+  const submit = () => {
+    // Create the user message in the schema
+    setText('')
+    const message = {
+      question: text,
+      selected: selected,
+      bingCompleted: false,
+      bardCompleted: false,
+      gpt3Completed: false,
+      gpt4Completed: false,
+    }
+    setSharedData((prev) => {
+      const newSharedData = {...prev}
+      newSharedData[prev.selectedConversation].conversation.push(message)
+      return newSharedData
+    })
+  }
+
+  return (
+    <Box
+      width="100vw"
+      height="100vh"
+      display="flex"
+      flexDirection="column"
+      sx={{
+        backgroundColor: 'background.default',
+      }}
+    >
+      <TopBar />
+      <Box
+        display="flex"
+        flexDirection="column"
+        flex={1}
+        justifyContent="space-between"
+        alignItems="center"
+        spacing={2}
+        overflow={'auto'}
+      >
+        {conversations.map((message, index) => (
+          <Stack
+            key={`stack-${index}`}
+            direction="column"
+            justifyContent="flex-start"
+            alignItems="center"
+            spacing={2}
+            width="70%"
+          >
+            <Card
+              sx={{
+                width: '100%',
+                borderWidth: '5px',
+                borderColor: 'primary.main',
+              }}
+              variant="outlined"
             >
-              <Card
-                sx={{
-                  width: '100%',
-                  borderWidth: '5px',
-                  borderColor: "primary.main"
-                }}
-                variant="outlined"
-              >
-                <CardContent>
-                  <Typography
-                    key={`question-${index}`}
-                    variant="subtitle1"
-                    gutterBottom
-                  >
-                    Question (Asked to {message.selected}): {message.question}
-                  </Typography>
-                </CardContent>
-              </Card>
-              {(message.selected === 'all' || message.selected === 'bing') && (
-                <BotResponse
-                  key={`bing-${index}`}
-                  name="Bing"
-                  text={
-                    message.bingResponse ? message.bingResponse : 'Loading...'
-                  }
-                  avatar={require('../images/bingLogo.png').default}
-                />
-              )}
-              {(message.selected === 'all' || message.selected === 'bard') && (
-                <BotResponse
-                  key={`bard-${index}`}
-                  name="Bard"
-                  text={
-                    message.bardResponse ? message.bardResponse : 'Loading...'
-                  }
-                  avatar={require('../images/bardLogo.png').default}
-                />
-              )}
-            </Stack>
-          ))}
-        </Box>
-        <BotBar
-          onChange={onChange}
-          submit={submit}
-          value={text}
-          selected={selected}
-          setSelected={setSelected}
-        />
+              <CardContent>
+                <Typography
+                  key={`question-${index}`}
+                  variant="subtitle1"
+                  gutterBottom
+                >
+                  Question (Asked to {message.selected}): {message.question}
+                </Typography>
+              </CardContent>
+            </Card>
+            {(message.selected === 'all' || message.selected === 'bing') && (
+              <BotResponse
+                key={`bing-${index}`}
+                name="Bing"
+                text={
+                  message.bingResponse ? message.bingResponse : 'Loading...'
+                }
+                avatar={require('../images/bingLogo.png').default}
+              />
+            )}
+            {(message.selected === 'all' || message.selected === 'bard') && (
+              <BotResponse
+                key={`bard-${index}`}
+                name="Bard"
+                text={
+                  message.bardResponse ? message.bardResponse : 'Loading...'
+                }
+                avatar={require('../images/bardLogo.gif').default}
+              />
+            )}
+            {(message.selected === 'all' || message.selected === 'gpt3') && (
+              <BotResponse
+                key={`gpt3-${index}`}
+                name="ChatGPT3.5"
+                text={
+                  message.gpt3Response ? message.gpt3Response : 'Loading...'
+                }
+                avatar={require('../images/gpt3Logo.png').default}
+              />
+            )}
+            {(message.selected === 'all' || message.selected === 'gpt4') && (
+              <BotResponse
+                key={`gpt4-${index}`}
+                name="ChatGPT4"
+                text={
+                  message.gpt4Response ? message.gpt4Response : 'Loading...'
+                }
+                avatar={require('../images/gpt4Logo.png').default}
+              />
+            )}
+          </Stack>
+        ))}
       </Box>
-    )
+      <BotBar
+        onChange={onChange}
+        submit={submit}
+        value={text}
+        selected={selected}
+        setSelected={setSelected}
+      />
+    </Box>
+  )
 }
 
 export default ResponsesPage

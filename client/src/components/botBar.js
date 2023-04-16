@@ -1,5 +1,5 @@
 import React from 'react'
-import { Stack, Select, MenuItem } from '@mui/material'
+import {Stack, Select, MenuItem} from '@mui/material'
 import QuestionField from '../components/questionField'
 const BotBar = (props) => {
   return (
@@ -20,11 +20,13 @@ const BotBar = (props) => {
         <MenuItem value="all">All</MenuItem>
         <MenuItem value="bing">Bing</MenuItem>
         <MenuItem value="bard">Bard</MenuItem>
+        <MenuItem value="gpt3">GPT3</MenuItem>
+        <MenuItem value="gpt4">GPT4</MenuItem>
       </Select>
       <QuestionField
         onChange={props.onChange}
-        onSubmit={props.submit}
-        value={props.text}
+        submit={props.submit}
+        value={props.value}
         placeholder="Ask a question"
         backgroundColor="background.default"
       />
