@@ -4,6 +4,7 @@ import './src/global.css'
 import {ThemeProvider} from '@mui/material/styles'
 import {themeOptions} from './src/components/theme'
 import AppContext from './src/appContext' // Corrected import statement
+import {FirebaseApp} from 'firebase/app'
 
 export const wrapRootElement = ({element}) => {
   return (

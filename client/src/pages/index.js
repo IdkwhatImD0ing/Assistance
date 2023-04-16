@@ -8,8 +8,12 @@ import {v4 as uuidv4} from 'uuid'
 import ToggleButton from '@mui/material/ToggleButton'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
+import {useAuthUser} from '../components/auth'
+import Login from '../components/login'
 
 const IndexPage = () => {
+  const auth = useAuthUser()
+
   const {sharedData, setSharedData, isDarkMode, setIsDarkMode} =
     useContext(AppContext)
 
@@ -29,6 +33,10 @@ const IndexPage = () => {
       }
     }
   }, [])
+
+  if (!auth) {
+    return <Login />
+  }
 
   const submit = () => {
     // Create a new session

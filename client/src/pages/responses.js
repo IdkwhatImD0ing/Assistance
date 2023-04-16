@@ -20,25 +20,25 @@ const botMapping = {
       name: 'Bing',
       responseKey: 'bingResponse',
       completedKey: 'bingCompleted',
-      apiEndpoint: 'http://localhost:5000/bingchat',
+      apiEndpoint: 'https://api.art3m1s.me:3051/bingchat',
     },
     {
       name: 'Bard',
       responseKey: 'bardResponse',
       completedKey: 'bardCompleted',
-      apiEndpoint: 'http://localhost:5000/bardchat',
+      apiEndpoint: 'https://api.art3m1s.me:3051/bardchat',
     },
     {
       name: 'GPT3',
       responseKey: 'gpt3Response',
       completedKey: 'gpt3Completed',
-      apiEndpoint: 'http://localhost:5000/openai_chat3.5',
+      apiEndpoint: 'https://api.art3m1s.me:3051/openai_chat3.5',
     },
     {
       name: 'GPT4',
       responseKey: 'gpt4Response',
       completedKey: 'gpt4Completed',
-      apiEndpoint: 'http://localhost:5000/openai_chat4',
+      apiEndpoint: 'https://api.art3m1s.me:3051/openai_chat4',
     },
   ],
   bing: [
@@ -47,7 +47,7 @@ const botMapping = {
       responseKey: 'bingResponse',
       completedKey: 'bingCompleted',
       useForAll: true,
-      apiEndpoint: 'http://localhost:5000/bingchat',
+      apiEndpoint: 'https://api.art3m1s.me:3051/bingchat',
     },
   ],
   bard: [
@@ -56,7 +56,7 @@ const botMapping = {
       responseKey: 'bardResponse',
       completedKey: 'bardCompleted',
       useForAll: true,
-      apiEndpoint: 'http://localhost:5000/bardchat',
+      apiEndpoint: 'https://api.art3m1s.me:3051/bardchat',
     },
   ],
   gpt3: [
@@ -65,7 +65,7 @@ const botMapping = {
       responseKey: 'gpt3Response',
       completedKey: 'gpt3Completed',
       useForAll: true,
-      apiEndpoint: 'http://localhost:5000/openai_chat3.5',
+      apiEndpoint: 'https://api.art3m1s.me:3051/openai_chat3.5',
     },
   ],
   gpt4: [
@@ -74,7 +74,7 @@ const botMapping = {
       responseKey: 'gpt4Response',
       completedKey: 'gpt4Completed',
       useForAll: true,
-      apiEndpoint: 'http://localhost:5000/openai_chat4',
+      apiEndpoint: 'https://api.art3m1s.me:3051/openai_chat4',
     },
   ],
 }
