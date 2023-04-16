@@ -304,3 +304,5 @@ const ResponsesPage = () => {
 }
 
 export default ResponsesPage
+
+export const Head = () => <title>Chat</title>

@@ -89,3 +89,5 @@ const PreviousQuestionSession = () => {
 }
 
 export default PreviousQuestionSession
+
+export const Head = () => <title>Previous</title>
