@@ -25,6 +25,12 @@ const QuestionField = (props) => {
           maxHeight: '30vh',
           overflow: 'auto',
           flexGrow: 1,
+          backgroundColor: 'background.paper',
+        }}
+        InputLabelProps={{
+          sx: {
+            color: 'text.primary', // Change the label color here
+          },
         }}
         InputProps={{
           endAdornment: (
