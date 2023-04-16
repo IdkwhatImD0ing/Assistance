@@ -2,3 +2,4 @@ venv
 cookies.json
 .env
 __pycache__
+*pem

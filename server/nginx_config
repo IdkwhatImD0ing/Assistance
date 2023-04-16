@@ -1,0 +1,25 @@
+    server {
+        listen 3050 ssl;
+        server_name api.art3m1s.me www.api.art3m1s.me;
+
+        ssl_certificate /etc/ssl/certs/cert.pem;
+        ssl_certificate_key /etc/ssl/private/private.pem;
+        ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3;
+        ssl_ciphers 'TLS_AES_128_GCM_SHA256:TLS_AES_256_GCM_SHA384:TLS_CHACHA20_POLY1305_SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-GCM-SHA384';   
+        ssl_prefer_server_ciphers on;
+        ssl_session_cache shared:SSL:10m;
+
+        location / {
+            proxy_pass http://0.0.0.0:8000;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header Access-Control-Allow-Origin $http_origin;
+            proxy_set_header Access-Control-Allow-Methods "GET, POST, OPTIONS";
+            proxy_set_header Access-Control-Allow-Headers "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range";
+            proxy_set_header Access-Control-Expos-Headers "Content-Length,Content-Range";
+            proxy_read_timeout 300;
+            proxy_connect_timeout 300;
+        }
+    }
