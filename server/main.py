@@ -13,7 +13,6 @@ load_dotenv()
 
 app = FastAPI()
 token = environ.get("BARD_TOKEN")
-bard_chatbot = BardChatbot(token)
 openai.api_key = environ.get("OPENAI_API_KEY")
 app.add_middleware(
     CORSMiddleware,
@@ -52,6 +51,10 @@ async def ask_chatbot(conversation):
 @app.post("/bingchat")
 async def bingchat(conversation: Conversation):
     response = await ask_chatbot(conversation.conversation)
+    if ('item' in response and 'result' in response['item']
+            and 'value' in response['item']['result']
+            and response['item']['result']['value'] == 'Throttled'):
+        return {"response": "You have reached your limit for today. :("}
     return {
         "response":
         response["item"]["messages"][-1].get(
@@ -60,6 +63,7 @@ async def bingchat(conversation: Conversation):
 
 
 def ask_bard_chatbot(conversation):
+    bard_chatbot = BardChatbot(token)
     conversation_text = "\n".join(
         [f"{msg.role}: {msg.message}" for msg in conversation])
     response = bard_chatbot.ask(conversation_text)

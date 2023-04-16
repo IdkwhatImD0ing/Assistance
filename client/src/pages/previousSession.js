@@ -1,72 +1,76 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { Typography, Stack, Box } from "@mui/material";
+import { navigate } from "gatsby";
 import BotResponse from "../components/botResponse";
-import { AppContext } from "../appContext";
-import { useContext } from "react";
+import AppContext from "../appContext";
 
-const PreviousQuestionSession = (props) => {
+const PreviousQuestionSession = () => {
   const { sharedData, setSharedData } = useContext(AppContext);
-  /* Shared data schema
-  {
-    selectedConversation: initialUUID,
-    [initialUUID]: {
-      editable: true,
-      selectedLLM: 'all',
-      conversation: [],
-       },
-      */
+
+  useEffect(() => {
+    if (Object.keys(sharedData).length === 0) {
+      navigate("/");
+    }
+  }, [sharedData]);
+
   return (
-    <Box width="100vw" height="100vh">
-      <Box
-        display="flex"
-        flexDirection="column"
-        justifyContent="space-between"
-        alignItems="center"
-        spacing={2}
-        overflow={"auto"}
+    <Box
+      display="flex"
+      flexDirection="column"
+      justifyContent="center"
+      alignItems="center"
+      height="100vh"
+      overflow="auto"
+      bgcolor="#F7F7F7"
+      fontFamily="'Montserrat', sans-serif"
+    >
+      <Typography
+        variant="h2"
+        align="center"
+        mb={4}
+        color="#363636"
+        fontWeight="bold"
       >
-        <Typography variant="h2">Previous Sessions</Typography>
-        <Stack
-          direction="column"
-          justifyContent="flex-start"
-          alignItems="center"
-          spacing={2}
-          width="50%"
-        >
-          <Typography>
-            Current Session:{" "}
-            {
-              sharedData[sharedData.selectedConversation].conversation[0]
-                .question
-            }
-          </Typography>
-          {
-            // Cycle through all non selected conversation keys and key is not selected conversation
-            Object.keys(sharedData)
-              .filter(
-                (key) =>
-                  key !== sharedData.selectedConversation &&
-                  key !== "selectedConversation"
-              )
-              .map((key) => {
-                return (
-                  <Typography
-                    key={key}
-                    onClick={() => {
-                      setSharedData({
-                        ...sharedData,
-                        selectedConversation: key,
-                      });
-                      navigate("/responses");
-                    }}
-                  >
-                    {sharedData[key].conversation[0].question}
-                  </Typography>
-                );
-              })
-          }
-        </Stack>
-      </Box>
+        Previous Sessions
+      </Typography>
+      <Stack
+        direction="column"
+        justifyContent="center"
+        alignItems="stretch"
+        spacing={3}
+        width="50%"
+      >
+        <BotResponse
+          key={`question-${sharedData.selectedConversation}`}
+          text={sharedData[sharedData.selectedConversation].sessionName}
+          name="Session Name"
+          bgcolor="#FFF"
+          boxShadow="0px 4px 8px rgba(0, 0, 0, 0.1)"
+          borderRadius="4px"
+          padding="16px"
+          color="#363636"
+          fontWeight="bold"
+        />
+        {Object.keys(sharedData)
+          .filter(
+            (key) =>
+              key !== sharedData.selectedConversation &&
+              key !== "selectedConversation"
+          )
+          .map((key) => (
+            <BotResponse
+              key={`question-${key}`}
+              text={sharedData[key].sessionName}
+              name="Session Name"
+              bgcolor="#FFF"
+              boxShadow="0px 4px 8px rgba(0, 0, 0, 0.1)"
+              borderRadius="4px"
+              padding="16px"
+              color="#363636"
+              fontWeight="bold"
+            />
+          ))}
+      </Stack>
     </Box>
   );
 };

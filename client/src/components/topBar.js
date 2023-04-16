@@ -13,7 +13,11 @@ const TopBar = () => {
           spacing={2}
           sx={{height: '10vh'}}
         >
-          <Button variant="contained">Previous</Button>
+          <Button variant="contained"
+            onClick={() => {
+              navigate('/previousSession')
+            }}
+          >Previous</Button>
           <Button
             variant="contained"
             onClick={() => {

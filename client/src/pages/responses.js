@@ -167,7 +167,6 @@ const ResponsesPage = () => {
                   <Typography
                     key={`question-${index}`}
                     variant="subtitle1"
-                    component="subtitle1"
                     gutterBottom
                   >
                     Question (Asked to {message.selected}): {message.question}
