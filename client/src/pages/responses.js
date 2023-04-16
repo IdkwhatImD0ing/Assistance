@@ -60,14 +60,13 @@ const fetchResponse = async (apiEndpoint, conversation) => {
 }
 
 const ResponsesPage = () => {
-    const {sharedData, setSharedData, resetSharedData} = useContext(AppContext)
+    const {sharedData, setSharedData} = useContext(AppContext)
     const conversations = sharedData[sharedData.selectedConversation].conversation;
     const [text, setText] = useState('')
     const [selected, setSelected] = useState('all')
 
     useEffect(() => {
       if (conversations.length === 0) {
-        resetSharedData()
         navigate('/')
         return
       }
@@ -155,7 +154,6 @@ const ResponsesPage = () => {
           <Button
             variant="contained"
             onClick={() => {
-              resetSharedData()
               navigate('/')
             }}
           >
