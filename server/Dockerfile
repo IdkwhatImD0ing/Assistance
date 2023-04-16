@@ -2,7 +2,7 @@
 
 FROM python:3.10-slim-buster
 
-WORKDIR /sinkorswim
+WORKDIR /assistant
 
 # Install dependencies
 RUN apt-get update
@@ -22,8 +22,8 @@ COPY . .
 
 # Configure Nginx
 RUN rm /etc/nginx/sites-enabled/default
-COPY nginx_config /etc/nginx/sites-available/sinkorswim
-RUN ln -s /etc/nginx/sites-available/sinkorswim /etc/nginx/sites-enabled/
+COPY nginx_config /etc/nginx/sites-available/assistant
+RUN ln -s /etc/nginx/sites-available/assistant /etc/nginx/sites-enabled/
 
 # Run the application
 CMD ["/usr/bin/supervisord"]
