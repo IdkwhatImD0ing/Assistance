@@ -37,7 +37,7 @@ class Conversation(BaseModel):
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Hello Assistant Backend"}
 
 
 async def ask_chatbot(conversation):
