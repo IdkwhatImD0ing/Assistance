@@ -256,7 +256,7 @@ const ResponsesPage = () => {
                 text={
                   message.bingResponse ? message.bingResponse : 'Loading...'
                 }
-                avatar={require('../images/bingLogo.png').default}
+                avatar={require('../images/bingLogo.gif').default}
               />
             )}
             {(message.selected === 'all' || message.selected === 'bard') && (
@@ -276,7 +276,7 @@ const ResponsesPage = () => {
                 text={
                   message.gpt3Response ? message.gpt3Response : 'Loading...'
                 }
-                avatar={require('../images/gpt3Logo.png').default}
+                avatar={require('../images/gpt3Logo.gif').default}
               />
             )}
             {(message.selected === 'all' || message.selected === 'gpt4') && (
@@ -286,7 +286,7 @@ const ResponsesPage = () => {
                 text={
                   message.gpt4Response ? message.gpt4Response : 'Loading...'
                 }
-                avatar={require('../images/gpt4Logo.png').default}
+                avatar={require('../images/gpt4Logo.gif').default}
               />
             )}
           </Stack>
