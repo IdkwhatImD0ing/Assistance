@@ -1,8 +1,20 @@
 import React from "react";
-import { Typography, Stack, Box} from "@mui/material";
+import { Typography, Stack, Box } from "@mui/material";
 import BotResponse from "../components/botResponse";
+import { AppContext } from "../appContext";
+import { useContext } from "react";
 
 const PreviousQuestionSession = (props) => {
+  const { sharedData, setSharedData } = useContext(AppContext);
+  /* Shared data schema
+  {
+    selectedConversation: initialUUID,
+    [initialUUID]: {
+      editable: true,
+      selectedLLM: 'all',
+      conversation: [],
+       },
+      */
   return (
     <Box width="100vw" height="100vh">
       <Box
@@ -11,7 +23,7 @@ const PreviousQuestionSession = (props) => {
         justifyContent="space-between"
         alignItems="center"
         spacing={2}
-        overflow={'auto'}
+        overflow={"auto"}
       >
         <Typography variant="h2">Previous Sessions</Typography>
         <Stack
@@ -21,30 +33,42 @@ const PreviousQuestionSession = (props) => {
           spacing={2}
           width="50%"
         >
-          <BotResponse
-            name="I am inevitable."
-            text="Previous session 2"
-          />
+          <Typography>
+            Current Session:{" "}
+            {
+              sharedData[sharedData.selectedConversation].conversation[0]
+                .question
+            }
+          </Typography>
+          {
+            // Cycle through all non selected conversation keys and key is not selected conversation
+            Object.keys(sharedData)
+              .filter(
+                (key) =>
+                  key !== sharedData.selectedConversation &&
+                  key !== "selectedConversation"
+              )
+              .map((key) => {
+                return (
+                  <Typography
+                    key={key}
+                    onClick={() => {
+                      setSharedData({
+                        ...sharedData,
+                        selectedConversation: key,
+                      });
+                      navigate("/responses");
+                    }}
+                  >
+                    {sharedData[key].conversation[0].question}
+                  </Typography>
+                );
+              })
+          }
         </Stack>
       </Box>
-      {/* 
-<Stack
-      sx={{
-        width: "100%",
-        height: "100%",
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Card>
-        <Typography>CURRENT QUESTION SESSION</Typography>
-      </Card>
-      <BotResponse name="Session 1" text="Previous Session"></BotResponse>
-    </Stack> */}
     </Box>
-  )
+  );
 };
 
 export default PreviousQuestionSession;
