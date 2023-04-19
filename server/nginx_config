@@ -1,4 +1,4 @@
-    limit_req_zone $binary_remote_addr zone=my_zone:10m rate=1r/s;
+    limit_req_zone $binary_remote_addr zone=my_zone:10m rate=5r/m;
     server {
         listen 3051 ssl;
         server_name api.art3m1s.me www.api.art3m1s.me;
