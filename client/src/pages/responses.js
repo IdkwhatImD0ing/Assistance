@@ -20,25 +20,25 @@ const botMapping = {
       name: 'Bing',
       responseKey: 'bingResponse',
       completedKey: 'bingCompleted',
-      apiEndpoint: 'https://api.art3m1s.me:3051/bingchat',
+      apiEndpoint: 'https://api.art3m1s.me/assistant/bingchat',
     },
     {
       name: 'Bard',
       responseKey: 'bardResponse',
       completedKey: 'bardCompleted',
-      apiEndpoint: 'https://api.art3m1s.me:3051/bardchat',
+      apiEndpoint: 'https://api.art3m1s.me/assistant/bardchat',
     },
     {
       name: 'GPT3',
       responseKey: 'gpt3Response',
       completedKey: 'gpt3Completed',
-      apiEndpoint: 'https://api.art3m1s.me:3051/openai_chat3.5',
+      apiEndpoint: 'https://api.art3m1s.me/assistant/openai_chat3.5',
     },
     {
       name: 'GPT4',
       responseKey: 'gpt4Response',
       completedKey: 'gpt4Completed',
-      apiEndpoint: 'https://api.art3m1s.me:3051/openai_chat4',
+      apiEndpoint: 'https://api.art3m1s.me/assistant/openai_chat4',
     },
   ],
   bing: [
@@ -47,7 +47,7 @@ const botMapping = {
       responseKey: 'bingResponse',
       completedKey: 'bingCompleted',
       useForAll: true,
-      apiEndpoint: 'https://api.art3m1s.me:3051/bingchat',
+      apiEndpoint: 'https://api.art3m1s.me/assistant/bingchat',
     },
   ],
   bard: [
@@ -56,7 +56,7 @@ const botMapping = {
       responseKey: 'bardResponse',
       completedKey: 'bardCompleted',
       useForAll: true,
-      apiEndpoint: 'https://api.art3m1s.me:3051/bardchat',
+      apiEndpoint: 'https://api.art3m1s.me/assistant/bardchat',
     },
   ],
   gpt3: [
@@ -65,7 +65,7 @@ const botMapping = {
       responseKey: 'gpt3Response',
       completedKey: 'gpt3Completed',
       useForAll: true,
-      apiEndpoint: 'https://api.art3m1s.me:3051/openai_chat3.5',
+      apiEndpoint: 'https://api.art3m1s.me/assistant/openai_chat3.5',
     },
   ],
   gpt4: [
@@ -74,7 +74,7 @@ const botMapping = {
       responseKey: 'gpt4Response',
       completedKey: 'gpt4Completed',
       useForAll: true,
-      apiEndpoint: 'https://api.art3m1s.me:3051/openai_chat4',
+      apiEndpoint: 'https://api.art3m1s.me/assistant/openai_chat4',
     },
   ],
 }
