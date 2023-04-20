@@ -25,7 +25,7 @@ function Copyright(props) {
         mb: 5,
       }}
     >
-      {'Copyright © Assistant '}
+      {'Copyright © Assistance '}
       {new Date().getFullYear()}
       {'.'}
     </Typography>
